@@ -5,8 +5,8 @@ const path     = require('path');
 const db       = require('./database');
 
 const app    = express();
-const PORT   = 3000;
-const SECRET = 'nf_jwt_secret_key_2024_change_in_prod';
+const PORT   = process.env.PORT || 3000;
+const SECRET = process.env.JWT_SECRET || 'nf_jwt_secret_key_2024_change_in_prod';
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
