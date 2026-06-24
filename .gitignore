@@ -1,0 +1,8 @@
+node_modules/
+nationalfinance.db
+nationalfinance.db-shm
+nationalfinance.db-wal
+*.db
+*.db-shm
+*.db-wal
+.env

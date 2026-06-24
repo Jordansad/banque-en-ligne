@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nationalfinance — Administration</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A2342;--navy-l:#0f2f57;--navy-d:#061828;
+  --gold:#C9A84C;--gold-l:#dfc06e;--gold-d:#a8882e;
+  --white:#fff;--off:#F5F7FA;--g100:#EEF1F6;--g200:#D1D9E6;
+  --g400:#8A9BBF;--g600:#4A5568;--g800:#1A202C;
+  --green:#22C55E;--red:#EF4444;--amber:#F59E0B;--blue:#3B82F6;
+  --sidebar-w:240px;
+  --sh:0 1px 3px rgba(10,35,66,.08);
+  --shm:0 4px 16px rgba(10,35,66,.12);
+  --tr:.22s cubic-bezier(.4,0,.2,1);
+  --r:8px;--rl:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:'Inter',sans-serif;background:var(--off);color:var(--g800);min-height:100vh}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+input,select,textarea{font-family:inherit}
+
+/* ── LOGIN ── */
+#loginScreen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--navy-d),var(--navy));
+}
+.login-box{
+  background:var(--white);border-radius:20px;padding:44px 40px;
+  width:100%;max-width:420px;box-shadow:0 24px 64px rgba(0,0,0,.25);
+}
+.login-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:32px}
+.login-logo-icon{width:40px;height:40px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.login-logo-text{font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:700;color:var(--navy)}
+.login-box h1{font-family:'Poppins',sans-serif;font-size:1.3rem;text-align:center;color:var(--navy);margin-bottom:6px}
+.login-box p{text-align:center;font-size:.85rem;color:var(--g400);margin-bottom:28px}
+.fgroup{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.fgroup label{font-size:.8rem;font-weight:600;color:var(--g600)}
+.fgroup input,.fgroup select{
+  padding:11px 14px;border:2px solid var(--g200);border-radius:var(--r);
+  font-size:.9rem;color:var(--g800);transition:border-color var(--tr)
+}
+.fgroup input:focus,.fgroup select:focus{outline:none;border-color:var(--gold)}
+.login-err{background:#fef2f2;color:var(--red);border:1px solid #fecaca;border-radius:var(--r);padding:10px 14px;font-size:.82rem;margin-bottom:14px;display:none}
+.btn-primary{
+  width:100%;padding:13px;background:var(--gold);color:var(--navy-d);border-radius:var(--r);
+  font-size:.95rem;font-weight:700;transition:all var(--tr)
+}
+.btn-primary:hover{background:var(--gold-l);transform:translateY(-1px)}
+.admin-badge{
+  display:flex;align-items:center;gap:6px;justify-content:center;
+  margin-top:20px;font-size:.75rem;color:var(--g400)
+}
+.admin-badge svg{color:var(--green)}
+
+/* ── APP SHELL ── */
+#appShell{display:none;min-height:100vh}
+.shell{display:flex;min-height:100vh}
+
+/* Sidebar */
+.sidebar{
+  width:var(--sidebar-w);background:var(--navy-d);
+  display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;
+  overflow-y:auto;
+}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:20px 18px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-logo-icon{width:34px;height:34px;background:var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-logo-text{font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;color:var(--white)}
+.sb-logo-text span{color:var(--gold)}
+.sb-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);padding:18px 18px 8px}
+.sb-nav{display:flex;flex-direction:column;gap:2px;padding:0 10px}
+.sb-link{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:var(--r);
+  font-size:.87rem;font-weight:500;color:rgba(255,255,255,.6);
+  transition:all var(--tr);cursor:pointer;
+}
+.sb-link:hover{color:var(--white);background:rgba(255,255,255,.06)}
+.sb-link.active{color:var(--white);background:rgba(201,168,76,.18)}
+.sb-link.active svg{color:var(--gold)}
+.sb-link svg{width:18px;height:18px;flex-shrink:0}
+.sb-badge{
+  margin-left:auto;background:var(--red);color:var(--white);
+  font-size:.68rem;font-weight:700;padding:2px 6px;border-radius:99px;min-width:18px;text-align:center
+}
+.sb-footer{margin-top:auto;padding:14px 10px}
+.sb-logout{
+  display:flex;align-items:center;gap:10px;width:100%;
+  padding:10px 12px;border-radius:var(--r);
+  color:rgba(255,255,255,.5);font-size:.85rem;font-weight:500;
+  transition:all var(--tr)
+}
+.sb-logout:hover{color:var(--red);background:rgba(239,68,68,.1)}
+
+/* Main content */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{
+  height:60px;background:var(--white);border-bottom:1px solid var(--g100);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;position:sticky;top:0;z-index:50;box-shadow:var(--sh)
+}
+.topbar-title{font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;color:var(--navy)}
+.topbar-user{display:flex;align-items:center;gap:10px}
+.topbar-avatar{
+  width:34px;height:34px;background:var(--navy);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:700;color:var(--white)
+}
+.topbar-name{font-size:.85rem;font-weight:600;color:var(--g600)}
+.content{padding:28px;flex:1}
+
+/* Views */
+.view{display:none}
+.view.active{display:block}
+
+/* Stat cards */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px}
+.stat-card{
+  background:var(--white);border-radius:var(--rl);padding:22px 24px;
+  border:1px solid var(--g100);position:relative;overflow:hidden;
+}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold)}
+.stat-label{font-size:.78rem;font-weight:600;color:var(--g400);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.stat-val{font-family:'Poppins',sans-serif;font-size:1.8rem;font-weight:700;color:var(--navy);line-height:1}
+.stat-sub{font-size:.75rem;color:var(--g400);margin-top:4px}
+.stat-icon{position:absolute;top:18px;right:18px;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+
+/* Table */
+.card{background:var(--white);border-radius:var(--rl);border:1px solid var(--g100);overflow:hidden;margin-bottom:24px}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--g100)}
+.card-title{font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy)}
+.card-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse}
+th{padding:11px 16px;text-align:left;font-size:.73rem;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.07em;background:var(--off);border-bottom:1px solid var(--g100)}
+td{padding:12px 16px;font-size:.85rem;border-bottom:1px solid var(--g100);vertical-align:middle}
+tr:last-child td{border:none}
+tr:hover td{background:#fafbfc}
+.tb-empty{text-align:center;padding:32px;color:var(--g400);font-size:.88rem}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font-size:.73rem;font-weight:700}
+.badge-pending{background:#fef3c7;color:#92400e}
+.badge-accepted{background:#dcfce7;color:#166534}
+.badge-refused{background:#fee2e2;color:#991b1b}
+.badge-processed{background:#dbeafe;color:#1e40af}
+.badge-active{background:#dcfce7;color:#166534}
+.badge-suspended{background:#fef3c7;color:#92400e}
+.badge-closed{background:#f3f4f6;color:#6b7280}
+.badge-credit{background:#dcfce7;color:#166534}
+.badge-debit{background:#fee2e2;color:#991b1b}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r);font-size:.82rem;font-weight:600;transition:all var(--tr)}
+.btn-gold{background:var(--gold);color:var(--navy-d)}
+.btn-gold:hover{background:var(--gold-l);transform:translateY(-1px)}
+.btn-navy{background:var(--navy);color:var(--white)}
+.btn-navy:hover{background:var(--navy-l)}
+.btn-outline{background:transparent;border:1.5px solid var(--g200);color:var(--g600)}
+.btn-outline:hover{border-color:var(--navy);color:var(--navy)}
+.btn-red{background:#fee2e2;color:var(--red)}
+.btn-red:hover{background:var(--red);color:var(--white)}
+.btn-green{background:#dcfce7;color:#166534}
+.btn-green:hover{background:var(--green);color:var(--white)}
+.btn-sm{padding:5px 10px;font-size:.75rem}
+.btn-icon{width:30px;height:30px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;padding:0}
+
+/* Filter bar */
+.filter-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:14px 22px;border-bottom:1px solid var(--g100);background:var(--off)}
+.filter-bar input,.filter-bar select{padding:7px 12px;border:1.5px solid var(--g200);border-radius:var(--r);font-size:.82rem;color:var(--g800);background:var(--white);transition:border-color var(--tr)}
+.filter-bar input:focus,.filter-bar select:focus{outline:none;border-color:var(--gold)}
+
+/* Modal */
+.modal-ov{position:fixed;inset:0;z-index:1000;background:rgba(6,24,40,.65);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity var(--tr)}
+.modal-ov.open{opacity:1;pointer-events:all}
+.modal{background:var(--white);border-radius:20px;width:100%;max-width:580px;max-height:90vh;overflow-y:auto;transform:scale(.96);transition:transform var(--tr)}
+.modal-ov.open .modal{transform:scale(1)}
+.modal-h{display:flex;justify-content:space-between;align-items:center;padding:22px 26px 16px;border-bottom:1px solid var(--g100)}
+.modal-h h2{font-family:'Poppins',sans-serif;font-size:1.05rem;color:var(--navy)}
+.modal-close{width:30px;height:30px;border-radius:50%;background:var(--g100);display:flex;align-items:center;justify-content:center;transition:background var(--tr)}
+.modal-close:hover{background:var(--g200)}
+.modal-b{padding:22px 26px 26px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.span2{grid-column:1/-1}
+.modal-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+
+/* Alert */
+.alert{padding:10px 14px;border-radius:var(--r);font-size:.82rem;margin-bottom:14px}
+.alert-success{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+.alert-error{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+
+/* Credentials box */
+.cred-box{background:var(--off);border:1px solid var(--g200);border-radius:var(--r);padding:16px;margin:14px 0}
+.cred-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:.85rem}
+.cred-row:last-child{margin:0}
+.cred-key{color:var(--g600);font-weight:500}
+.cred-val{font-family:monospace;font-size:.9rem;background:var(--white);border:1px solid var(--g200);padding:3px 8px;border-radius:4px;color:var(--navy);font-weight:700;letter-spacing:.05em}
+
+/* Log table */
+.log-action{font-family:monospace;font-size:.78rem;background:var(--off);padding:2px 7px;border-radius:4px;color:var(--navy-l)}
+
+/* Spinner */
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:var(--white);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Toast */
+#toast{
+  position:fixed;bottom:24px;right:24px;z-index:2000;
+  background:var(--navy-d);color:var(--white);padding:12px 20px;
+  border-radius:var(--r);font-size:.85rem;font-weight:500;
+  box-shadow:var(--shm);opacity:0;transform:translateY(8px);
+  transition:all var(--tr);pointer-events:none;max-width:320px;
+}
+#toast.show{opacity:1;transform:translateY(0)}
+#toast.t-success{border-left:3px solid var(--green)}
+#toast.t-error{border-left:3px solid var(--red)}
+
+/* Client detail panel */
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.detail-item label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--g400);margin-bottom:3px}
+.detail-item p{font-size:.88rem;color:var(--g800);font-weight:500}
+.balance-big{font-family:'Poppins',sans-serif;font-size:2rem;font-weight:800;color:var(--navy)}
+
+/* Recent activity */
+.activity-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--g100)}
+.activity-item:last-child{border:none}
+.activity-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.activity-dot.login{background:var(--blue)}
+.activity-dot.credit{background:var(--green)}
+.activity-dot.debit{background:var(--red)}
+.activity-dot.create{background:var(--gold)}
+.activity-dot.update{background:var(--amber)}
+.activity-txt{font-size:.83rem;color:var(--g600);flex:1}
+.activity-txt strong{color:var(--g800)}
+.activity-time{font-size:.72rem;color:var(--g400);white-space:nowrap}
+
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);transition:transform var(--tr)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .stats-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .stats-grid{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ LOGIN ═══════════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A2342" stroke-width="2.2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+      </div>
+      <span class="login-logo-text">National<span>finance</span></span>
+    </div>
+    <h1>Espace Administrateur</h1>
+    <p>Accès réservé au personnel autorisé</p>
+    <div class="login-err" id="loginErr"></div>
+    <div class="fgroup"><label>Adresse email</label><input type="email" id="loginEmail" placeholder="admin@nationalfinance.fr"></div>
+    <div class="fgroup"><label>Mot de passe</label><input type="password" id="loginPwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn-primary" onclick="doLogin()" id="loginBtn">Se connecter</button>
+    <div class="admin-badge">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Connexion sécurisée SSL — Nationalfinance © 2025
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ APP ═══════════ -->
+<div id="appShell">
+  <div class="shell">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A2342" stroke-width="2.2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+        <span class="sb-logo-text">National<span>finance</span></span>
+      </div>
+      <div class="sb-label">Navigation</div>
+      <nav class="sb-nav">
+        <div class="sb-link active" onclick="showView('dashboard')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Tableau de bord
+        </div>
+        <div class="sb-link" onclick="showView('requests')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Demandes
+          <span class="sb-badge" id="sbPending">0</span>
+        </div>
+        <div class="sb-link" onclick="showView('clients')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Clients
+        </div>
+        <div class="sb-link" onclick="showView('logs')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Journaux
+        </div>
+      </nav>
+      <div class="sb-footer">
+        <button class="sb-logout" onclick="logout()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Déconnexion
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main">
+      <div class="topbar">
+        <span class="topbar-title" id="topbarTitle">Tableau de bord</span>
+        <div class="topbar-user">
+          <div class="topbar-avatar" id="adminInitials">A</div>
+          <span class="topbar-name" id="adminName">Administrateur</span>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <!-- ── DASHBOARD ── -->
+        <div class="view active" id="viewDashboard">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon" style="background:#dbeafe"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div>
+              <div class="stat-label">Demandes totales</div>
+              <div class="stat-val" id="stTotal">—</div>
+              <div class="stat-sub" id="stToday">— aujourd'hui</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background:#fef3c7"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div class="stat-label">En attente</div>
+              <div class="stat-val" id="stPending">—</div>
+              <div class="stat-sub">À traiter</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background:#dcfce7"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+              <div class="stat-label">Clients actifs</div>
+              <div class="stat-val" id="stClients">—</div>
+              <div class="stat-sub" id="stTotalClients">— total</div>
+            </div>
+            <div class="stat-card" style="grid-column:1/-1">
+              <div class="stat-icon" style="background:#f0fdf4"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+              <div class="stat-label">Solde total géré</div>
+              <div class="stat-val" id="stBalance">—</div>
+              <div class="stat-sub">Ensemble des comptes clients</div>
+            </div>
+          </div>
+
+          <!-- Recent requests -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Dernières demandes</span>
+              <button class="btn btn-outline btn-sm" onclick="showView('requests')">Voir tout</button>
+            </div>
+            <table>
+              <thead><tr><th>Nom</th><th>Email</th><th>Type</th><th>Montant</th><th>Statut</th><th>Date</th></tr></thead>
+              <tbody id="dashRecentRequests"><tr><td colspan="6" class="tb-empty">Chargement…</td></tr></tbody>
+            </table>
+          </div>
+
+          <!-- Activity log preview -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Activité récente</span>
+              <button class="btn btn-outline btn-sm" onclick="showView('logs')">Journal complet</button>
+            </div>
+            <div style="padding:14px 22px" id="dashActivity">Chargement…</div>
+          </div>
+        </div>
+
+        <!-- ── REQUESTS ── -->
+        <div class="view" id="viewRequests">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Demandes reçues</span>
+              <button class="btn btn-gold btn-sm" onclick="loadRequests()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg> Actualiser
+              </button>
+            </div>
+            <div class="filter-bar">
+              <select id="reqStatusFilter" onchange="loadRequests()">
+                <option value="">Tous les statuts</option>
+                <option value="pending">En attente</option>
+                <option value="accepted">Acceptée</option>
+                <option value="refused">Refusée</option>
+                <option value="processed">Traitée</option>
+              </select>
+            </div>
+            <table>
+              <thead><tr><th>#</th><th>Nom complet</th><th>Email</th><th>Type de prêt</th><th>Montant</th><th>Statut</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="reqTable"><tr><td colspan="8" class="tb-empty">Chargement…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── CLIENTS ── -->
+        <div class="view" id="viewClients">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Gestion des clients</span>
+              <div class="card-actions">
+                <button class="btn btn-gold btn-sm" onclick="loadClients()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg> Actualiser
+                </button>
+                <button class="btn btn-navy btn-sm" onclick="openNewClient()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Nouveau client
+                </button>
+              </div>
+            </div>
+            <div class="filter-bar">
+              <input type="text" id="clientSearch" placeholder="Rechercher (nom, email, ID…)" oninput="loadClients()" style="min-width:220px">
+              <select id="clientStatusFilter" onchange="loadClients()">
+                <option value="">Tous les statuts</option>
+                <option value="active">Actif</option>
+                <option value="suspended">Suspendu</option>
+                <option value="closed">Fermé</option>
+              </select>
+            </div>
+            <table>
+              <thead><tr><th>ID Client</th><th>Nom complet</th><th>Email</th><th>Solde</th><th>Statut</th><th>Créé le</th><th>Actions</th></tr></thead>
+              <tbody id="clientTable"><tr><td colspan="7" class="tb-empty">Chargement…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── LOGS ── -->
+        <div class="view" id="viewLogs">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Journal des actions</span>
+              <button class="btn btn-gold btn-sm" onclick="loadLogs()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg> Actualiser
+              </button>
+            </div>
+            <table>
+              <thead><tr><th>Date / Heure</th><th>Administrateur</th><th>Action</th><th>Détails</th></tr></thead>
+              <tbody id="logsTable"><tr><td colspan="4" class="tb-empty">Chargement…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /content -->
+    </div><!-- /main -->
+  </div><!-- /shell -->
+</div><!-- /appShell -->
+
+<!-- ═══════════ MODALS ═══════════ -->
+
+<!-- Request detail -->
+<div class="modal-ov" id="modalReq">
+  <div class="modal">
+    <div class="modal-h">
+      <h2>Détail de la demande</h2>
+      <button class="modal-close" onclick="closeModal('modalReq')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-b">
+      <div class="grid2" id="reqDetailContent"></div>
+      <div class="fgroup" style="margin-top:14px"><label>Statut</label>
+        <select id="reqStatusSel">
+          <option value="pending">En attente</option>
+          <option value="accepted">Acceptée</option>
+          <option value="refused">Refusée</option>
+          <option value="processed">Traitée</option>
+        </select>
+      </div>
+      <div class="fgroup"><label>Notes internes</label><textarea id="reqNotes" rows="3" style="padding:10px;border:2px solid var(--g200);border-radius:var(--r);resize:vertical;width:100%;font-size:.88rem" placeholder="Observations, commentaires…"></textarea></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalReq')">Annuler</button>
+        <button class="btn btn-gold" onclick="saveRequestStatus()" id="reqSaveBtn">Enregistrer</button>
+        <button class="btn btn-navy" onclick="promoteToClient()" id="reqPromoteBtn">Créer compte client</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New / Edit client -->
+<div class="modal-ov" id="modalClient">
+  <div class="modal">
+    <div class="modal-h">
+      <h2 id="clientModalTitle">Nouveau client</h2>
+      <button class="modal-close" onclick="closeModal('modalClient')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-b">
+      <div id="clientModalAlert"></div>
+      <input type="hidden" id="clientEditId">
+      <div class="grid2">
+        <div class="fgroup"><label>Nom *</label><input id="cNom" placeholder="Dupont"></div>
+        <div class="fgroup"><label>Prénom *</label><input id="cPrenom" placeholder="Jean"></div>
+        <div class="fgroup span2"><label>Email *</label><input id="cEmail" type="email" placeholder="jean.dupont@email.fr"></div>
+        <div class="fgroup"><label>Téléphone</label><input id="cTel" placeholder="06 12 34 56 78"></div>
+        <div class="fgroup"><label>Situation</label>
+          <select id="cSituation">
+            <option value="">— Choisir —</option>
+            <option>CDI</option><option>CDD</option><option>Indépendant</option><option>Retraité</option>
+          </select>
+        </div>
+        <div class="fgroup"><label>Revenus mensuels (€)</label><input id="cRevenus" type="number" placeholder="2500"></div>
+        <div class="fgroup" id="clientStatusGroup" style="display:none"><label>Statut</label>
+          <select id="cStatus"><option value="active">Actif</option><option value="suspended">Suspendu</option><option value="closed">Fermé</option></select>
+        </div>
+      </div>
+      <div class="cred-box" id="credsBox" style="display:none">
+        <div style="font-size:.8rem;font-weight:700;color:var(--g600);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Identifiants générés</div>
+        <div class="cred-row"><span class="cred-key">ID Client</span><span class="cred-val" id="credId">—</span></div>
+        <div class="cred-row"><span class="cred-key">Email</span><span class="cred-val" id="credEmail">—</span></div>
+        <div class="cred-row"><span class="cred-key">Mot de passe temporaire</span><span class="cred-val" id="credPwd">—</span></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalClient')">Fermer</button>
+        <button class="btn btn-gold" onclick="saveClient()" id="clientSaveBtn">Créer le compte</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Operation (credit/debit) -->
+<div class="modal-ov" id="modalOp">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-h">
+      <h2 id="opModalTitle">Opération</h2>
+      <button class="modal-close" onclick="closeModal('modalOp')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-b">
+      <div id="opAlert"></div>
+      <input type="hidden" id="opClientId">
+      <input type="hidden" id="opType">
+      <div class="fgroup"><label>Montant (€) *</label><input id="opAmount" type="number" min="0.01" step="0.01" placeholder="500.00"></div>
+      <div class="fgroup"><label>Motif / Description</label><input id="opDesc" placeholder="Ex: Virement entrant, remboursement…"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalOp')">Annuler</button>
+        <button class="btn btn-gold" onclick="doOperation()" id="opBtn">Valider</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Client detail -->
+<div class="modal-ov" id="modalClientDetail">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-h">
+      <h2 id="clientDetailTitle">Fiche client</h2>
+      <button class="modal-close" onclick="closeModal('modalClientDetail')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-b">
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px">
+        <button class="btn btn-green btn-sm" onclick="openOp('credit')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Créditer
+        </button>
+        <button class="btn btn-red btn-sm" onclick="openOp('debit')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg> Débiter
+        </button>
+        <button class="btn btn-outline btn-sm" onclick="openEditClient()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Modifier
+        </button>
+      </div>
+      <div id="clientDetailContent"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = '';
+let token = localStorage.getItem('nf_admin_token');
+let currentView = 'dashboard';
+let selectedReqId = null;
+let selectedClientId = null;
+let selectedReqData = null;
+
+/* ── Helpers ── */
+async function api(method, url, body) {
+  const opts = { method, headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (token||'') } };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(API + url, opts);
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.error || 'Erreur serveur');
+  return d;
+}
+
+function toast(msg, type='success') {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'show t-' + type;
+  setTimeout(() => el.className = '', 3000);
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function fmtDate(s) {
+  if (!s) return '—';
+  return new Date(s).toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+function fmtMoney(n) { return new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' }).format(n || 0); }
+function statusBadge(s) {
+  const m = { pending:'badge-pending', accepted:'badge-accepted', refused:'badge-refused', processed:'badge-processed', active:'badge-active', suspended:'badge-suspended', closed:'badge-closed', credit:'badge-credit', debit:'badge-debit' };
+  const l = { pending:'En attente', accepted:'Acceptée', refused:'Refusée', processed:'Traitée', active:'Actif', suspended:'Suspendu', closed:'Fermé', credit:'Crédit', debit:'Débit' };
+  return `<span class="badge ${m[s]||''}">${l[s]||s}</span>`;
+}
+function actDot(action) {
+  if (action==='LOGIN') return 'login';
+  if (action==='CREDIT') return 'credit';
+  if (action==='DEBIT') return 'debit';
+  if (action.includes('CREATE')) return 'create';
+  return 'update';
+}
+
+/* ── Auth ── */
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pwd   = document.getElementById('loginPwd').value;
+  const errEl = document.getElementById('loginErr');
+  const btn   = document.getElementById('loginBtn');
+  errEl.style.display = 'none';
+  if (!email || !pwd) { errEl.textContent = 'Veuillez remplir tous les champs.'; errEl.style.display = 'block'; return; }
+  btn.innerHTML = '<span class="spinner"></span>';
+  try {
+    const d = await api('POST', '/api/auth/admin/login', { email, password: pwd });
+    token = d.token;
+    localStorage.setItem('nf_admin_token', token);
+    document.getElementById('adminName').textContent = d.admin.name;
+    document.getElementById('adminInitials').textContent = d.admin.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appShell').style.display = 'block';
+    loadDashboard();
+  } catch(e) {
+    errEl.textContent = e.message; errEl.style.display = 'block';
+  }
+  btn.textContent = 'Se connecter';
+}
+
+function logout() {
+  localStorage.removeItem('nf_admin_token');
+  token = null;
+  location.reload();
+}
+
+/* ── Views ── */
+function showView(v) {
+  currentView = v;
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.sb-link').forEach(el => el.classList.remove('active'));
+  document.getElementById('view' + v.charAt(0).toUpperCase() + v.slice(1)).classList.add('active');
+  document.querySelectorAll('.sb-link')[['dashboard','requests','clients','logs'].indexOf(v)].classList.add('active');
+  const titles = { dashboard:'Tableau de bord', requests:'Demandes', clients:'Clients', logs:'Journaux' };
+  document.getElementById('topbarTitle').textContent = titles[v] || v;
+  if (v === 'requests') loadRequests();
+  if (v === 'clients')  loadClients();
+  if (v === 'logs')     loadLogs();
+  if (v === 'dashboard') loadDashboard();
+}
+
+/* ── Dashboard ── */
+async function loadDashboard() {
+  try {
+    const [stats, reqs, logs] = await Promise.all([
+      api('GET', '/api/admin/stats'),
+      api('GET', '/api/admin/requests?limit=5'),
+      api('GET', '/api/admin/logs')
+    ]);
+    document.getElementById('stTotal').textContent   = stats.totalRequests;
+    document.getElementById('stToday').textContent   = `${stats.todayRequests} aujourd'hui`;
+    document.getElementById('stPending').textContent = stats.pendingRequests;
+    document.getElementById('stClients').textContent = stats.activeClients;
+    document.getElementById('stTotalClients').textContent = `${stats.totalClients} total`;
+    document.getElementById('stBalance').textContent = fmtMoney(stats.totalBalance);
+    document.getElementById('sbPending').textContent = stats.pendingRequests;
+
+    // Recent requests
+    const tbody = document.getElementById('dashRecentRequests');
+    tbody.innerHTML = reqs.requests.length ? reqs.requests.map(r => `
+      <tr>
+        <td><strong>${r.prenom} ${r.nom}</strong></td>
+        <td>${r.email}</td>
+        <td>${r.type_pret||'—'}</td>
+        <td>${r.montant ? fmtMoney(r.montant) : '—'}</td>
+        <td>${statusBadge(r.status)}</td>
+        <td>${fmtDate(r.created_at)}</td>
+      </tr>`).join('') : '<tr><td colspan="6" class="tb-empty">Aucune demande</td></tr>';
+
+    // Activity
+    const act = document.getElementById('dashActivity');
+    act.innerHTML = logs.logs.slice(0,8).map(l => `
+      <div class="activity-item">
+        <div class="activity-dot ${actDot(l.action)}"></div>
+        <div class="activity-txt"><strong>${l.admin_name||'Admin'}</strong> — ${l.details||l.action}</div>
+        <span class="activity-time">${fmtDate(l.created_at)}</span>
+      </div>`).join('') || '<p style="color:var(--g400);font-size:.85rem">Aucune activité</p>';
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+/* ── Requests ── */
+async function loadRequests() {
+  const status = document.getElementById('reqStatusFilter').value;
+  try {
+    const d = await api('GET', `/api/admin/requests?${status?'status='+status:''}`);
+    const tbody = document.getElementById('reqTable');
+    tbody.innerHTML = d.requests.length ? d.requests.map(r => `
+      <tr>
+        <td><span style="color:var(--g400);font-size:.78rem">#${r.id}</span></td>
+        <td><strong>${r.prenom} ${r.nom}</strong></td>
+        <td>${r.email}</td>
+        <td>${r.type_pret||'—'}</td>
+        <td>${r.montant ? fmtMoney(r.montant) : '—'}</td>
+        <td>${statusBadge(r.status)}</td>
+        <td>${fmtDate(r.created_at)}</td>
+        <td>
+          <button class="btn btn-outline btn-sm btn-icon" onclick='openRequest(${JSON.stringify(r)})' title="Voir">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+        </td>
+      </tr>`).join('') : '<tr><td colspan="8" class="tb-empty">Aucune demande trouvée</td></tr>';
+  } catch(e) { toast(e.message,'error'); }
+}
+
+function openRequest(r) {
+  selectedReqId   = r.id;
+  selectedReqData = r;
+  document.getElementById('reqStatusSel').value = r.status;
+  document.getElementById('reqNotes').value      = r.notes || '';
+  document.getElementById('reqDetailContent').innerHTML = `
+    <div><label style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--g400)">Nom complet</label><p style="font-weight:600;margin-top:3px">${r.prenom} ${r.nom}</p></div>
+    <div><label style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--g400)">Email</label><p style="margin-top:3px">${r.email}</p></div>
+    <div><label style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--g400)">Téléphone</label><p style="margin-top:3px">${r.telephone||'—'}</p></div>
+    <div><label style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--g400)">Type de prêt</label><p style="margin-top:3px">${r.type_pret||'—'}</p></div>
+    <div><label style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--g400)">Montant</label><p style="margin-top:3px;font-weight:700;color:var(--navy)">${r.montant?fmtMoney(r.montant):'—'}</p></div>
+    <div><label style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--g400)">Durée</label><p style="margin-top:3px">${r.duree||'—'}</p></div>
+    <div><label style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--g400)">Revenus mensuel</label><p style="margin-top:3px">${r.revenus?fmtMoney(r.revenus):'—'}</p></div>
+    <div><label style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--g400)">Situation</label><p style="margin-top:3px">${r.situation||'—'}</p></div>
+    <div><label style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--g400)">Date de demande</label><p style="margin-top:3px">${fmtDate(r.created_at)}</p></div>
+    <div><label style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--g400)">Statut actuel</label><p style="margin-top:3px">${statusBadge(r.status)}</p></div>
+  `;
+  openModal('modalReq');
+}
+
+async function saveRequestStatus() {
+  const status = document.getElementById('reqStatusSel').value;
+  const notes  = document.getElementById('reqNotes').value;
+  try {
+    await api('PUT', `/api/admin/requests/${selectedReqId}`, { status, notes });
+    closeModal('modalReq'); loadRequests(); loadDashboard();
+    toast('Statut mis à jour avec succès');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+function promoteToClient() {
+  if (!selectedReqData) return;
+  const r = selectedReqData;
+  closeModal('modalReq');
+  openNewClient(r);
+}
+
+/* ── Clients ── */
+async function loadClients() {
+  const search = document.getElementById('clientSearch').value;
+  const status = document.getElementById('clientStatusFilter').value;
+  try {
+    const d = await api('GET', `/api/admin/clients?${search?'search='+encodeURIComponent(search):''}${status?'&status='+status:''}`);
+    const tbody = document.getElementById('clientTable');
+    tbody.innerHTML = d.clients.length ? d.clients.map(c => `
+      <tr>
+        <td><code style="background:var(--off);padding:2px 6px;border-radius:4px;font-size:.78rem">${c.client_id}</code></td>
+        <td><strong>${c.prenom} ${c.nom}</strong></td>
+        <td>${c.email}</td>
+        <td><strong style="color:var(--navy)">${fmtMoney(c.balance)}</strong></td>
+        <td>${statusBadge(c.status)}</td>
+        <td>${fmtDate(c.created_at)}</td>
+        <td style="display:flex;gap:6px">
+          <button class="btn btn-outline btn-sm btn-icon" onclick="openClientDetail(${c.id})" title="Fiche">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+          <button class="btn btn-green btn-sm btn-icon" onclick="selectedClientId=${c.id};openOp('credit')" title="Créditer">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <button class="btn btn-red btn-sm btn-icon" onclick="selectedClientId=${c.id};openOp('debit')" title="Débiter">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </td>
+      </tr>`).join('') : '<tr><td colspan="7" class="tb-empty">Aucun client trouvé</td></tr>';
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function openClientDetail(id) {
+  selectedClientId = id;
+  try {
+    const d = await api('GET', `/api/admin/clients/${id}`);
+    const c = d.client;
+    document.getElementById('clientDetailTitle').textContent = `${c.prenom} ${c.nom} — ${c.client_id}`;
+    document.getElementById('clientDetailContent').innerHTML = `
+      <div class="detail-grid">
+        <div class="detail-item"><label>ID Client</label><p><code style="background:var(--off);padding:2px 8px;border-radius:4px">${c.client_id}</code></p></div>
+        <div class="detail-item"><label>Statut</label><p>${statusBadge(c.status)}</p></div>
+        <div class="detail-item"><label>Nom complet</label><p>${c.prenom} ${c.nom}</p></div>
+        <div class="detail-item"><label>Email</label><p>${c.email}</p></div>
+        <div class="detail-item"><label>Téléphone</label><p>${c.telephone||'—'}</p></div>
+        <div class="detail-item"><label>Situation</label><p>${c.situation||'—'}</p></div>
+        <div class="detail-item"><label>Revenus</label><p>${c.revenus?fmtMoney(c.revenus):'—'}</p></div>
+        <div class="detail-item"><label>Mot de passe temporaire</label><p>${c.temp_password ? `<code style="background:var(--off);padding:2px 8px;border-radius:4px;color:var(--red)">${c.temp_password}</code>` : '<span style="color:var(--green)">Modifié</span>'}</p></div>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--navy),var(--navy-d));border-radius:var(--rl);padding:20px 24px;margin-bottom:18px">
+        <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:6px">Solde du compte</div>
+        <div class="balance-big" style="color:var(--gold)">${fmtMoney(c.balance)}</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.4);margin-top:4px">Créé le ${fmtDate(c.created_at)}</div>
+      </div>
+      <div style="font-weight:700;font-size:.85rem;color:var(--navy);margin-bottom:12px">Historique des opérations</div>
+      ${d.transactions.length ? `<table>
+        <thead><tr><th>Date</th><th>Type</th><th>Montant</th><th>Solde après</th><th>Motif</th></tr></thead>
+        <tbody>${d.transactions.map(t=>`<tr>
+          <td>${fmtDate(t.created_at)}</td>
+          <td>${statusBadge(t.type)}</td>
+          <td><strong style="color:${t.type==='credit'?'#166534':'#991b1b'}">${t.type==='credit'?'+':'−'}${fmtMoney(t.amount)}</strong></td>
+          <td>${fmtMoney(t.balance_after)}</td>
+          <td style="color:var(--g400)">${t.description||'—'}</td>
+        </tr>`).join('')}</tbody>
+      </table>` : '<p style="color:var(--g400);font-size:.85rem">Aucune opération</p>'}
+    `;
+    openModal('modalClientDetail');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+function openNewClient(prefill) {
+  document.getElementById('clientModalTitle').textContent = 'Nouveau client';
+  document.getElementById('clientEditId').value = '';
+  document.getElementById('clientSaveBtn').textContent = 'Créer le compte';
+  document.getElementById('clientStatusGroup').style.display = 'none';
+  document.getElementById('credsBox').style.display = 'none';
+  document.getElementById('clientModalAlert').innerHTML = '';
+  if (prefill) {
+    document.getElementById('cNom').value      = prefill.nom      || '';
+    document.getElementById('cPrenom').value   = prefill.prenom   || '';
+    document.getElementById('cEmail').value    = prefill.email    || '';
+    document.getElementById('cTel').value      = prefill.telephone|| '';
+    document.getElementById('cSituation').value= prefill.situation|| '';
+    document.getElementById('cRevenus').value  = prefill.revenus  || '';
+    document.getElementById('clientEditId').value = 'req:' + prefill.id;
+  } else {
+    ['cNom','cPrenom','cEmail','cTel','cSituation','cRevenus'].forEach(id => document.getElementById(id).value = '');
+  }
+  openModal('modalClient');
+}
+
+function openEditClient() {
+  closeModal('modalClientDetail');
+  // Reload client data for editing
+  api('GET', `/api/admin/clients/${selectedClientId}`).then(d => {
+    const c = d.client;
+    document.getElementById('clientModalTitle').textContent = 'Modifier le client';
+    document.getElementById('clientEditId').value = c.id;
+    document.getElementById('cNom').value      = c.nom;
+    document.getElementById('cPrenom').value   = c.prenom;
+    document.getElementById('cEmail').value    = c.email;
+    document.getElementById('cTel').value      = c.telephone||'';
+    document.getElementById('cSituation').value= c.situation||'';
+    document.getElementById('cRevenus').value  = c.revenus||'';
+    document.getElementById('cStatus').value   = c.status;
+    document.getElementById('clientStatusGroup').style.display = 'block';
+    document.getElementById('credsBox').style.display = 'none';
+    document.getElementById('clientSaveBtn').textContent = 'Enregistrer';
+    document.getElementById('clientModalAlert').innerHTML = '';
+    openModal('modalClient');
+  }).catch(e => toast(e.message,'error'));
+}
+
+async function saveClient() {
+  const editId = document.getElementById('clientEditId').value;
+  const isEdit = editId && !editId.startsWith('req:');
+  const body   = {
+    nom: document.getElementById('cNom').value.trim(),
+    prenom: document.getElementById('cPrenom').value.trim(),
+    email: document.getElementById('cEmail').value.trim(),
+    telephone: document.getElementById('cTel').value.trim(),
+    situation: document.getElementById('cSituation').value,
+    revenus: parseFloat(document.getElementById('cRevenus').value) || 0,
+    status: document.getElementById('cStatus').value || 'active',
+    request_id: editId.startsWith('req:') ? parseInt(editId.split(':')[1]) : null,
+  };
+  if (!body.nom || !body.prenom || !body.email) {
+    document.getElementById('clientModalAlert').innerHTML = '<div class="alert alert-error">Veuillez remplir les champs obligatoires.</div>';
+    return;
+  }
+  const btn = document.getElementById('clientSaveBtn');
+  btn.innerHTML = '<span class="spinner"></span>';
+  try {
+    if (isEdit) {
+      await api('PUT', `/api/admin/clients/${editId}`, body);
+      closeModal('modalClient'); loadClients();
+      toast('Client mis à jour');
+    } else {
+      const d = await api('POST', '/api/admin/clients', body);
+      document.getElementById('credId').textContent    = d.clientId;
+      document.getElementById('credEmail').textContent = body.email;
+      document.getElementById('credPwd').textContent   = d.tempPassword;
+      document.getElementById('credsBox').style.display = 'block';
+      document.getElementById('clientModalAlert').innerHTML = '<div class="alert alert-success">Compte créé avec succès ! Communiquez ces identifiants au client.</div>';
+      btn.textContent = 'Fermer';
+      btn.onclick = () => { closeModal('modalClient'); loadClients(); loadDashboard(); btn.onclick = saveClient; };
+      return;
+    }
+  } catch(e) {
+    document.getElementById('clientModalAlert').innerHTML = `<div class="alert alert-error">${e.message}</div>`;
+  }
+  btn.textContent = isEdit ? 'Enregistrer' : 'Créer le compte';
+}
+
+/* ── Operations ── */
+function openOp(type) {
+  document.getElementById('opType').value       = type;
+  document.getElementById('opClientId').value   = selectedClientId;
+  document.getElementById('opModalTitle').textContent = type === 'credit' ? '💰 Créditer le compte' : '💸 Débiter le compte';
+  document.getElementById('opAmount').value     = '';
+  document.getElementById('opDesc').value       = '';
+  document.getElementById('opAlert').innerHTML  = '';
+  document.getElementById('opBtn').className    = 'btn btn-sm ' + (type==='credit' ? 'btn-green' : 'btn-red');
+  document.getElementById('opBtn').textContent  = type === 'credit' ? 'Créditer' : 'Débiter';
+  openModal('modalOp');
+}
+
+async function doOperation() {
+  const type   = document.getElementById('opType').value;
+  const cid    = document.getElementById('opClientId').value;
+  const amount = document.getElementById('opAmount').value;
+  const desc   = document.getElementById('opDesc').value;
+  if (!amount || parseFloat(amount) <= 0) {
+    document.getElementById('opAlert').innerHTML = '<div class="alert alert-error">Montant invalide.</div>';
+    return;
+  }
+  const btn = document.getElementById('opBtn');
+  btn.innerHTML = '<span class="spinner"></span>';
+  try {
+    const d = await api('POST', `/api/admin/clients/${cid}/${type}`, { amount: parseFloat(amount), description: desc });
+    closeModal('modalOp');
+    toast(`${type==='credit'?'Crédit':'Débit'} de ${fmtMoney(parseFloat(amount))} effectué. Nouveau solde : ${fmtMoney(d.newBalance)}`);
+    loadClients();
+    // Refresh detail if open
+    if (document.getElementById('modalClientDetail').classList.contains('open')) openClientDetail(cid);
+  } catch(e) {
+    document.getElementById('opAlert').innerHTML = `<div class="alert alert-error">${e.message}</div>`;
+  }
+  btn.innerHTML = type === 'credit' ? 'Créditer' : 'Débiter';
+}
+
+/* ── Logs ── */
+async function loadLogs() {
+  try {
+    const d = await api('GET', '/api/admin/logs');
+    const tbody = document.getElementById('logsTable');
+    tbody.innerHTML = d.logs.length ? d.logs.map(l => `
+      <tr>
+        <td style="white-space:nowrap">${fmtDate(l.created_at)}</td>
+        <td>${l.admin_name||'—'}</td>
+        <td><span class="log-action">${l.action}</span></td>
+        <td style="color:var(--g600)">${l.details||'—'}</td>
+      </tr>`).join('') : '<tr><td colspan="4" class="tb-empty">Aucune entrée</td></tr>';
+  } catch(e) { toast(e.message,'error'); }
+}
+
+/* ── Init ── */
+if (token) {
+  // Verify token by fetching stats
+  api('GET', '/api/admin/stats').then(() => {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appShell').style.display = 'block';
+    // Restore name from token payload
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      document.getElementById('adminName').textContent = payload.name || 'Admin';
+      document.getElementById('adminInitials').textContent = (payload.name||'A').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    } catch {}
+    loadDashboard();
+  }).catch(() => {
+    localStorage.removeItem('nf_admin_token');
+    token = null;
+  });
+}
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-ov').forEach(ov => {
+  ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('open'); });
+});
+document.addEventListener('keydown', e => { if (e.key==='Escape') document.querySelectorAll('.modal-ov.open').forEach(m=>m.classList.remove('open')); });
+</script>
+</body>
+</html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nationalfinance — Espace Client</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A2342;--navy-l:#0f2f57;--navy-d:#061828;
+  --gold:#C9A84C;--gold-l:#dfc06e;--gold-d:#a8882e;
+  --white:#fff;--off:#F5F7FA;--g100:#EEF1F6;--g200:#D1D9E6;
+  --g400:#8A9BBF;--g600:#4A5568;--g800:#1A202C;
+  --green:#22C55E;--red:#EF4444;--amber:#F59E0B;--blue:#3B82F6;
+  --sidebar-w:240px;
+  --sh:0 1px 3px rgba(10,35,66,.08);--shm:0 4px 16px rgba(10,35,66,.12);
+  --tr:.22s cubic-bezier(.4,0,.2,1);--r:8px;--rl:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:'Inter',sans-serif;background:var(--off);color:var(--g800);min-height:100vh}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+input,select,textarea{font-family:inherit}
+
+/* ── LOGIN ── */
+#loginScreen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--navy-d),var(--navy));
+  position:relative;overflow:hidden;
+}
+#loginScreen::before{content:'';position:absolute;top:-20%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(201,168,76,.1),transparent 65%);pointer-events:none}
+.login-box{
+  background:var(--white);border-radius:20px;padding:44px 40px;
+  width:100%;max-width:420px;box-shadow:0 24px 64px rgba(0,0,0,.25);position:relative;z-index:1;
+}
+.login-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:32px}
+.login-logo-icon{width:40px;height:40px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.login-logo-text{font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:700;color:var(--navy)}
+.login-logo-text span{color:var(--gold)}
+.login-box h1{font-family:'Poppins',sans-serif;font-size:1.3rem;text-align:center;color:var(--navy);margin-bottom:6px}
+.login-box .sub{text-align:center;font-size:.85rem;color:var(--g400);margin-bottom:28px}
+.fgroup{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.fgroup label{font-size:.8rem;font-weight:600;color:var(--g600)}
+.fgroup input{padding:12px 14px;border:2px solid var(--g200);border-radius:var(--r);font-size:.9rem;color:var(--g800);transition:border-color var(--tr)}
+.fgroup input:focus{outline:none;border-color:var(--gold)}
+.login-err{background:#fef2f2;color:var(--red);border:1px solid #fecaca;border-radius:var(--r);padding:10px 14px;font-size:.82rem;margin-bottom:14px;display:none}
+.btn-primary{width:100%;padding:13px;background:var(--gold);color:var(--navy-d);border-radius:var(--r);font-size:.95rem;font-weight:700;transition:all var(--tr)}
+.btn-primary:hover{background:var(--gold-l);transform:translateY(-1px)}
+.login-link{text-align:center;margin-top:18px;font-size:.8rem;color:var(--g400)}
+.login-link a{color:var(--gold);font-weight:600}
+.ssl-note{display:flex;align-items:center;gap:6px;justify-content:center;margin-top:16px;font-size:.73rem;color:var(--g400)}
+.ssl-note svg{color:var(--green)}
+
+/* ── APP SHELL ── */
+#appShell{display:none;min-height:100vh}
+.shell{display:flex;min-height:100vh}
+
+/* Sidebar */
+.sidebar{width:var(--sidebar-w);background:var(--navy-d);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:20px 18px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-logo-icon{width:34px;height:34px;background:var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-logo-text{font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;color:var(--white)}
+.sb-logo-text span{color:var(--gold)}
+.sb-client-info{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-client-avatar{width:40px;height:40px;background:linear-gradient(135deg,var(--gold-d),var(--gold));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:.85rem;font-weight:700;color:var(--navy-d);margin-bottom:8px}
+.sb-client-name{font-weight:700;font-size:.88rem;color:var(--white)}
+.sb-client-id{font-size:.73rem;color:rgba(255,255,255,.4);font-family:monospace}
+.sb-nav{display:flex;flex-direction:column;gap:2px;padding:12px 10px}
+.sb-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r);font-size:.87rem;font-weight:500;color:rgba(255,255,255,.6);transition:all var(--tr);cursor:pointer;position:relative}
+.sb-link:hover{color:var(--white);background:rgba(255,255,255,.06)}
+.sb-link.active{color:var(--white);background:rgba(201,168,76,.18)}
+.sb-link.active svg{color:var(--gold)}
+.sb-link svg{width:18px;height:18px;flex-shrink:0}
+.sb-notif-dot{position:absolute;top:8px;left:22px;width:8px;height:8px;background:var(--red);border-radius:50%;border:2px solid var(--navy-d)}
+.sb-footer{margin-top:auto;padding:14px 10px}
+.sb-logout{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:var(--r);color:rgba(255,255,255,.5);font-size:.85rem;font-weight:500;transition:all var(--tr)}
+.sb-logout:hover{color:var(--red);background:rgba(239,68,68,.1)}
+
+/* Main */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{height:60px;background:var(--white);border-bottom:1px solid var(--g100);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:50;box-shadow:var(--sh)}
+.topbar-title{font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;color:var(--navy)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.notif-bell{width:36px;height:36px;border-radius:var(--r);background:var(--off);display:flex;align-items:center;justify-content:center;position:relative;transition:background var(--tr)}
+.notif-bell:hover{background:var(--g100)}
+.notif-count{position:absolute;top:-2px;right:-2px;background:var(--red);color:var(--white);font-size:.62rem;font-weight:700;padding:1px 4px;border-radius:99px;min-width:16px;text-align:center;display:none}
+.content{padding:28px;flex:1}
+.view{display:none}
+.view.active{display:block}
+
+/* Balance hero card */
+.balance-hero{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-d) 100%);
+  border-radius:20px;padding:32px 36px;margin-bottom:24px;
+  position:relative;overflow:hidden;
+}
+.balance-hero::before{content:'';position:absolute;top:-30%;right:-10%;width:300px;height:300px;background:radial-gradient(circle,rgba(201,168,76,.15),transparent 65%);pointer-events:none}
+.balance-label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.5);margin-bottom:8px}
+.balance-amount{font-family:'Poppins',sans-serif;font-size:clamp(2rem,5vw,2.8rem);font-weight:800;color:var(--gold);line-height:1.1;margin-bottom:4px}
+.balance-client-id{font-size:.78rem;color:rgba(255,255,255,.35);font-family:monospace}
+.balance-meta{display:flex;gap:24px;margin-top:20px}
+.balance-meta-item{display:flex;flex-direction:column;gap:3px}
+.balance-meta-item .bm-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4)}
+.balance-meta-item .bm-val{font-size:.9rem;font-weight:600;color:var(--white)}
+
+/* Quick stats */
+.quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.qs-card{background:var(--white);border-radius:var(--rl);padding:18px 20px;border:1px solid var(--g100)}
+.qs-label{font-size:.72rem;font-weight:600;color:var(--g400);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.qs-val{font-family:'Poppins',sans-serif;font-size:1.3rem;font-weight:700;color:var(--navy)}
+
+/* Cards */
+.card{background:var(--white);border-radius:var(--rl);border:1px solid var(--g100);overflow:hidden;margin-bottom:24px}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--g100)}
+.card-title{font-family:'Poppins',sans-serif;font-size:.9rem;font-weight:700;color:var(--navy)}
+
+/* Transactions */
+.tx-list{display:flex;flex-direction:column}
+.tx-item{display:flex;align-items:center;gap:14px;padding:13px 20px;border-bottom:1px solid var(--g100);transition:background var(--tr)}
+.tx-item:last-child{border:none}
+.tx-item:hover{background:var(--off)}
+.tx-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tx-icon.credit{background:#dcfce7}
+.tx-icon.debit{background:#fee2e2}
+.tx-info{flex:1}
+.tx-desc{font-size:.85rem;font-weight:500;color:var(--g800)}
+.tx-date{font-size:.72rem;color:var(--g400);margin-top:2px}
+.tx-amount{font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:700}
+.tx-amount.credit{color:#166534}
+.tx-amount.debit{color:var(--red)}
+.tx-balance{font-size:.72rem;color:var(--g400);text-align:right;margin-top:2px}
+.tb-empty{text-align:center;padding:28px;color:var(--g400);font-size:.85rem}
+
+/* Notifications */
+.notif-list{display:flex;flex-direction:column}
+.notif-item{display:flex;gap:12px;align-items:flex-start;padding:14px 20px;border-bottom:1px solid var(--g100)}
+.notif-item:last-child{border:none}
+.notif-item.unread{background:rgba(201,168,76,.04)}
+.notif-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.notif-dot.success{background:var(--green)}
+.notif-dot.warning{background:var(--amber)}
+.notif-dot.info{background:var(--blue)}
+.notif-msg{font-size:.85rem;color:var(--g800);flex:1;line-height:1.5}
+.notif-time{font-size:.72rem;color:var(--g400);white-space:nowrap}
+
+/* Profile */
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:20px}
+.pfield{display:flex;flex-direction:column;gap:5px}
+.pfield label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--g400)}
+.pfield input{padding:10px 14px;border:2px solid var(--g200);border-radius:var(--r);font-size:.88rem;color:var(--g800);transition:border-color var(--tr)}
+.pfield input:focus{outline:none;border-color:var(--gold)}
+.pfield input[readonly]{background:var(--off);color:var(--g600);cursor:default}
+.pfield p{font-size:.88rem;color:var(--g800);font-weight:500;padding:10px 0}
+
+/* Alert */
+.alert{padding:10px 14px;border-radius:var(--r);font-size:.82rem;margin-bottom:12px}
+.alert-success{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+.alert-error{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:var(--r);font-size:.83rem;font-weight:600;transition:all var(--tr)}
+.btn-gold{background:var(--gold);color:var(--navy-d)}
+.btn-gold:hover{background:var(--gold-l)}
+.btn-navy{background:var(--navy);color:var(--white)}
+.btn-navy:hover{background:var(--navy-l)}
+.btn-outline{background:transparent;border:1.5px solid var(--g200);color:var(--g600)}
+.btn-outline:hover{border-color:var(--navy);color:var(--navy)}
+.btn-sm{padding:6px 12px;font-size:.78rem}
+
+/* Spinner */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:var(--white);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Toast */
+#toast{position:fixed;bottom:24px;right:24px;z-index:2000;background:var(--navy-d);color:var(--white);padding:12px 20px;border-radius:var(--r);font-size:.85rem;font-weight:500;box-shadow:var(--shm);opacity:0;transform:translateY(8px);transition:all var(--tr);pointer-events:none;max-width:300px}
+#toast.show{opacity:1;transform:translateY(0)}
+#toast.t-success{border-left:3px solid var(--green)}
+#toast.t-error{border-left:3px solid var(--red)}
+
+/* Modal */
+.modal-ov{position:fixed;inset:0;z-index:1000;background:rgba(6,24,40,.65);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity var(--tr)}
+.modal-ov.open{opacity:1;pointer-events:all}
+.modal{background:var(--white);border-radius:20px;width:100%;max-width:420px;transform:scale(.96);transition:transform var(--tr)}
+.modal-ov.open .modal{transform:scale(1)}
+.modal-h{display:flex;justify-content:space-between;align-items:center;padding:20px 24px 14px;border-bottom:1px solid var(--g100)}
+.modal-h h2{font-family:'Poppins',sans-serif;font-size:1rem;color:var(--navy)}
+.modal-close{width:28px;height:28px;border-radius:50%;background:var(--g100);display:flex;align-items:center;justify-content:center;transition:background var(--tr)}
+.modal-close:hover{background:var(--g200)}
+.modal-b{padding:20px 24px 24px}
+
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:transform var(--tr)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .quick-stats{grid-template-columns:1fr 1fr}
+  .profile-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ LOGIN ═══════════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A2342" stroke-width="2.2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+      </div>
+      <span class="login-logo-text">National<span>finance</span></span>
+    </div>
+    <h1>Espace Client</h1>
+    <p class="sub">Bienvenue sur votre portail bancaire sécurisé</p>
+    <div class="login-err" id="loginErr"></div>
+    <div class="fgroup"><label>Adresse email</label><input type="email" id="loginEmail" placeholder="votre@email.fr"></div>
+    <div class="fgroup"><label>Mot de passe</label><input type="password" id="loginPwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn-primary" onclick="doLogin()" id="loginBtn">Me connecter</button>
+    <div class="login-link"><a href="index.html">← Retour au site</a></div>
+    <div class="ssl-note">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Connexion chiffrée SSL 256 bits
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ APP ═══════════ -->
+<div id="appShell">
+  <div class="shell">
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A2342" stroke-width="2.2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+        <span class="sb-logo-text">National<span>finance</span></span>
+      </div>
+      <div class="sb-client-info">
+        <div class="sb-client-avatar" id="clientAvatar">?</div>
+        <div class="sb-client-name" id="clientName">Chargement…</div>
+        <div class="sb-client-id" id="clientIdDisplay">—</div>
+      </div>
+      <nav class="sb-nav">
+        <div class="sb-link active" onclick="showView('dashboard')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Tableau de bord
+        </div>
+        <div class="sb-link" onclick="showView('transactions')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          Mes opérations
+        </div>
+        <div class="sb-link" onclick="showView('notifications')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          Notifications
+          <span class="sb-notif-dot" id="sbNotifDot" style="display:none"></span>
+        </div>
+        <div class="sb-link" onclick="showView('profile')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Mon profil
+        </div>
+      </nav>
+      <div class="sb-footer">
+        <button class="sb-logout" onclick="logout()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Déconnexion
+        </button>
+      </div>
+    </aside>
+
+    <div class="main">
+      <div class="topbar">
+        <span class="topbar-title" id="topbarTitle">Tableau de bord</span>
+        <div class="topbar-right">
+          <button class="notif-bell" onclick="showView('notifications')" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notif-count" id="notifCount">0</span>
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="refreshAll()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg>
+            Actualiser
+          </button>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <!-- ── DASHBOARD ── -->
+        <div class="view active" id="viewDashboard">
+          <div class="balance-hero">
+            <div class="balance-label">Solde disponible</div>
+            <div class="balance-amount" id="dashBalance">Chargement…</div>
+            <div class="balance-client-id" id="dashClientId">—</div>
+            <div class="balance-meta">
+              <div class="balance-meta-item">
+                <span class="bm-label">Titulaire</span>
+                <span class="bm-val" id="dashName">—</span>
+              </div>
+              <div class="balance-meta-item">
+                <span class="bm-label">Statut</span>
+                <span class="bm-val" id="dashStatus">—</span>
+              </div>
+              <div class="balance-meta-item">
+                <span class="bm-label">Compte ouvert le</span>
+                <span class="bm-val" id="dashSince">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-stats">
+            <div class="qs-card">
+              <div class="qs-label">Opérations</div>
+              <div class="qs-val" id="qsTxCount">—</div>
+            </div>
+            <div class="qs-card">
+              <div class="qs-label">Total crédité</div>
+              <div class="qs-val" id="qsTotalCredit">—</div>
+            </div>
+            <div class="qs-card">
+              <div class="qs-label">Total débité</div>
+              <div class="qs-val" id="qsTotalDebit">—</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Dernières opérations</span>
+              <button class="btn btn-outline btn-sm" onclick="showView('transactions')">Voir tout</button>
+            </div>
+            <div class="tx-list" id="dashTxList"><div class="tb-empty">Chargement…</div></div>
+          </div>
+        </div>
+
+        <!-- ── TRANSACTIONS ── -->
+        <div class="view" id="viewTransactions">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Historique des opérations</span>
+              <button class="btn btn-outline btn-sm" onclick="loadTransactions()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg> Actualiser
+              </button>
+            </div>
+            <div class="tx-list" id="txList"><div class="tb-empty">Chargement…</div></div>
+          </div>
+        </div>
+
+        <!-- ── NOTIFICATIONS ── -->
+        <div class="view" id="viewNotifications">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Mes notifications</span>
+            </div>
+            <div class="notif-list" id="notifList"><div class="tb-empty">Chargement…</div></div>
+          </div>
+        </div>
+
+        <!-- ── PROFILE ── -->
+        <div class="view" id="viewProfile">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Mon profil</span>
+            </div>
+            <div id="profileAlert" style="padding:0 20px"></div>
+            <div class="profile-grid">
+              <div class="pfield"><label>ID Client</label><input id="pClientId" readonly></div>
+              <div class="pfield"><label>Statut</label><input id="pStatus" readonly></div>
+              <div class="pfield"><label>Nom</label><input id="pNom" readonly></div>
+              <div class="pfield"><label>Prénom</label><input id="pPrenom" readonly></div>
+              <div class="pfield"><label>Email</label><input id="pEmail" readonly></div>
+              <div class="pfield"><label>Téléphone</label><input id="pTel" placeholder="06 12 34 56 78"></div>
+              <div class="pfield"><label>Situation professionnelle</label><input id="pSituation" readonly></div>
+              <div class="pfield"><label>Revenus mensuels</label><input id="pRevenus" readonly></div>
+              <div class="pfield" style="grid-column:1/-1"><label>Membre depuis</label><input id="pSince" readonly></div>
+            </div>
+            <div style="padding:0 20px 20px;display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-gold" onclick="saveProfile()">Enregistrer le téléphone</button>
+              <button class="btn btn-outline" onclick="openPwdModal()">Changer mon mot de passe</button>
+            </div>
+          </div>
+
+          <!-- Temp password warning -->
+          <div id="tempPwdWarning" style="display:none" class="card" style="border-color:#fbbf24">
+            <div class="card-header" style="background:#fffbeb">
+              <span class="card-title" style="color:#92400e">⚠️ Mot de passe temporaire actif</span>
+            </div>
+            <div style="padding:16px 20px;font-size:.85rem;color:#92400e">
+              Vous utilisez encore votre mot de passe temporaire. Pour la sécurité de votre compte, veuillez le modifier dès maintenant.
+              <button class="btn btn-sm" style="margin-left:12px;background:#fef3c7;color:#92400e;border:1px solid #fbbf24" onclick="openPwdModal()">Modifier maintenant</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Password modal -->
+<div class="modal-ov" id="modalPwd">
+  <div class="modal">
+    <div class="modal-h">
+      <h2>Changer mon mot de passe</h2>
+      <button class="modal-close" onclick="closeModal('modalPwd')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-b">
+      <div id="pwdAlert"></div>
+      <div class="fgroup"><label>Mot de passe actuel</label><input type="password" id="pwdCurrent" placeholder="••••••••"></div>
+      <div class="fgroup"><label>Nouveau mot de passe</label><input type="password" id="pwdNew" placeholder="Minimum 6 caractères"></div>
+      <div class="fgroup"><label>Confirmer le nouveau mot de passe</label><input type="password" id="pwdConfirm" placeholder="••••••••"></div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px">
+        <button class="btn btn-outline" onclick="closeModal('modalPwd')">Annuler</button>
+        <button class="btn btn-gold" onclick="changePassword()" id="pwdBtn">Modifier</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = '';
+let token = localStorage.getItem('nf_client_token');
+let profileData = null;
+let txData = [];
+
+/* ── Helpers ── */
+async function api(method, url, body) {
+  const opts = { method, headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (token||'') } };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(API + url, opts);
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.error || 'Erreur serveur');
+  return d;
+}
+
+function toast(msg, type='success') {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'show t-'+type;
+  setTimeout(() => el.className = '', 3200);
+}
+function fmtDate(s) { if(!s)return'—'; return new Date(s).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+function fmtMoney(n) { return new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(n||0); }
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+
+function txItem(t) {
+  const isCredit = t.type === 'credit';
+  return `<div class="tx-item">
+    <div class="tx-icon ${t.type}">
+      ${isCredit
+        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'
+        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#991b1b" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>'}
+    </div>
+    <div class="tx-info">
+      <div class="tx-desc">${t.description || (isCredit ? 'Crédit' : 'Débit')}</div>
+      <div class="tx-date">${fmtDate(t.created_at)}</div>
+    </div>
+    <div>
+      <div class="tx-amount ${t.type}">${isCredit ? '+' : '−'}${fmtMoney(t.amount)}</div>
+      <div class="tx-balance">Solde : ${fmtMoney(t.balance_after)}</div>
+    </div>
+  </div>`;
+}
+
+/* ── Auth ── */
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pwd   = document.getElementById('loginPwd').value;
+  const errEl = document.getElementById('loginErr');
+  const btn   = document.getElementById('loginBtn');
+  errEl.style.display = 'none';
+  if (!email || !pwd) { errEl.textContent = 'Veuillez remplir tous les champs.'; errEl.style.display = 'block'; return; }
+  btn.innerHTML = '<span class="spinner"></span>';
+  try {
+    const d = await api('POST', '/api/auth/client/login', { email, password: pwd });
+    token = d.token;
+    localStorage.setItem('nf_client_token', token);
+    initApp(d.client);
+  } catch(e) {
+    errEl.textContent = e.message; errEl.style.display = 'block';
+  }
+  btn.textContent = 'Me connecter';
+}
+
+function initApp(c) {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appShell').style.display   = 'block';
+  const name = `${c.prenom} ${c.nom}`;
+  const initials = (c.prenom[0]+c.nom[0]).toUpperCase();
+  document.getElementById('clientAvatar').textContent    = initials;
+  document.getElementById('clientName').textContent      = name;
+  document.getElementById('clientIdDisplay').textContent = c.clientId;
+  loadDashboard();
+}
+
+function logout() {
+  localStorage.removeItem('nf_client_token');
+  token = null;
+  location.reload();
+}
+
+/* ── Views ── */
+function showView(v) {
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.sb-link').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view'+v.charAt(0).toUpperCase()+v.slice(1)).classList.add('active');
+  const idx = ['dashboard','transactions','notifications','profile'].indexOf(v);
+  if (idx >= 0) document.querySelectorAll('.sb-link')[idx].classList.add('active');
+  const titles = {dashboard:'Tableau de bord',transactions:'Mes opérations',notifications:'Notifications',profile:'Mon profil'};
+  document.getElementById('topbarTitle').textContent = titles[v]||v;
+  if (v==='transactions')  loadTransactions();
+  if (v==='notifications') loadNotifications();
+  if (v==='profile')       loadProfile();
+}
+
+/* ── Dashboard ── */
+async function loadDashboard() {
+  try {
+    const [prof, txs, notifs] = await Promise.all([
+      api('GET','/api/client/profile'),
+      api('GET','/api/client/transactions'),
+      api('GET','/api/client/notifications')
+    ]);
+    profileData = prof.client;
+    txData      = txs.transactions;
+
+    document.getElementById('dashBalance').textContent = fmtMoney(prof.client.balance);
+    document.getElementById('dashClientId').textContent = prof.client.client_id;
+    document.getElementById('dashName').textContent     = `${prof.client.prenom} ${prof.client.nom}`;
+    document.getElementById('dashStatus').textContent   = prof.client.status === 'active' ? '✓ Actif' : prof.client.status;
+    document.getElementById('dashSince').textContent    = new Date(prof.client.created_at).toLocaleDateString('fr-FR');
+
+    const credits = txData.filter(t=>t.type==='credit');
+    const debits  = txData.filter(t=>t.type==='debit');
+    const totalC  = credits.reduce((s,t)=>s+t.amount, 0);
+    const totalD  = debits.reduce((s,t)=>s+t.amount, 0);
+    document.getElementById('qsTxCount').textContent    = txData.length;
+    document.getElementById('qsTotalCredit').textContent= fmtMoney(totalC);
+    document.getElementById('qsTotalDebit').textContent = fmtMoney(totalD);
+
+    const dashList = document.getElementById('dashTxList');
+    dashList.innerHTML = txData.length
+      ? txData.slice(0,5).map(txItem).join('')
+      : '<div class="tb-empty">Aucune opération pour le moment</div>';
+
+    // Notif badge
+    const unread = notifs.unread;
+    document.getElementById('notifCount').textContent = unread;
+    document.getElementById('notifCount').style.display = unread ? 'block' : 'none';
+    document.getElementById('sbNotifDot').style.display  = unread ? 'block' : 'none';
+  } catch(e) { toast(e.message,'error'); }
+}
+
+/* ── Transactions ── */
+async function loadTransactions() {
+  try {
+    const d = await api('GET','/api/client/transactions');
+    txData = d.transactions;
+    document.getElementById('txList').innerHTML = txData.length
+      ? txData.map(txItem).join('')
+      : '<div class="tb-empty">Aucune opération enregistrée</div>';
+  } catch(e) { toast(e.message,'error'); }
+}
+
+/* ── Notifications ── */
+async function loadNotifications() {
+  try {
+    const d = await api('GET','/api/client/notifications');
+    document.getElementById('notifCount').style.display = 'none';
+    document.getElementById('sbNotifDot').style.display  = 'none';
+    document.getElementById('notifList').innerHTML = d.notifications.length
+      ? d.notifications.map(n => `
+        <div class="notif-item ${n.read?'':'unread'}">
+          <div class="notif-dot ${n.type}"></div>
+          <div class="notif-msg">${n.message}</div>
+          <span class="notif-time">${fmtDate(n.created_at)}</span>
+        </div>`).join('')
+      : '<div class="tb-empty">Aucune notification</div>';
+  } catch(e) { toast(e.message,'error'); }
+}
+
+/* ── Profile ── */
+async function loadProfile() {
+  try {
+    const d = await api('GET','/api/client/profile');
+    profileData = d.client;
+    const c = d.client;
+    document.getElementById('pClientId').value  = c.client_id;
+    document.getElementById('pStatus').value    = c.status === 'active' ? 'Actif' : c.status;
+    document.getElementById('pNom').value       = c.nom;
+    document.getElementById('pPrenom').value    = c.prenom;
+    document.getElementById('pEmail').value     = c.email;
+    document.getElementById('pTel').value       = c.telephone||'';
+    document.getElementById('pSituation').value = c.situation||'—';
+    document.getElementById('pRevenus').value   = c.revenus ? fmtMoney(c.revenus) : '—';
+    document.getElementById('pSince').value     = new Date(c.created_at).toLocaleDateString('fr-FR');
+    document.getElementById('tempPwdWarning').style.display = c.temp_password ? 'block' : 'none';
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function saveProfile() {
+  const tel = document.getElementById('pTel').value.trim();
+  try {
+    await api('PUT','/api/client/profile',{telephone:tel});
+    document.getElementById('profileAlert').innerHTML = '<div class="alert alert-success">Numéro de téléphone mis à jour.</div>';
+    setTimeout(() => document.getElementById('profileAlert').innerHTML = '', 3000);
+  } catch(e) { document.getElementById('profileAlert').innerHTML = `<div class="alert alert-error">${e.message}</div>`; }
+}
+
+/* ── Password ── */
+function openPwdModal() {
+  ['pwdCurrent','pwdNew','pwdConfirm'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pwdAlert').innerHTML = '';
+  openModal('modalPwd');
+}
+
+async function changePassword() {
+  const cur = document.getElementById('pwdCurrent').value;
+  const nw  = document.getElementById('pwdNew').value;
+  const cnf = document.getElementById('pwdConfirm').value;
+  if (nw !== cnf) { document.getElementById('pwdAlert').innerHTML='<div class="alert alert-error">Les mots de passe ne correspondent pas.</div>'; return; }
+  if (nw.length < 6) { document.getElementById('pwdAlert').innerHTML='<div class="alert alert-error">Minimum 6 caractères.</div>'; return; }
+  const btn = document.getElementById('pwdBtn');
+  btn.innerHTML = '<span class="spinner"></span>';
+  try {
+    await api('PUT','/api/client/password',{currentPassword:cur,newPassword:nw});
+    closeModal('modalPwd');
+    toast('Mot de passe modifié avec succès');
+    loadProfile();
+  } catch(e) { document.getElementById('pwdAlert').innerHTML=`<div class="alert alert-error">${e.message}</div>`; }
+  btn.textContent = 'Modifier';
+}
+
+function refreshAll() {
+  if (document.getElementById('viewDashboard').classList.contains('active')) loadDashboard();
+  else if (document.getElementById('viewTransactions').classList.contains('active')) loadTransactions();
+  else if (document.getElementById('viewNotifications').classList.contains('active')) loadNotifications();
+  else if (document.getElementById('viewProfile').classList.contains('active')) loadProfile();
+  toast('Données actualisées');
+}
+
+/* ── Init ── */
+if (token) {
+  api('GET','/api/client/profile').then(d => {
+    initApp({ prenom: d.client.prenom, nom: d.client.nom, clientId: d.client.client_id, id: d.client.id, email: d.client.email });
+  }).catch(() => { localStorage.removeItem('nf_client_token'); token = null; });
+}
+
+document.querySelectorAll('.modal-ov').forEach(ov => ov.addEventListener('click', e => { if(e.target===ov) ov.classList.remove('open'); }));
+document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.modal-ov.open').forEach(m=>m.classList.remove('open')); });
+</script>
+</body>
+</html>

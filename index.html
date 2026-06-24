@@ -1,0 +1,2323 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nationalfinance – Votre partenaire financier de confiance. Prêts personnels, immobiliers, crédits auto. Réponse sous 24h.">
+    <title>Nationalfinance – Votre Partenaire Financier de Confiance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           VARIABLES & RESET
+        ============================================================ */
+        :root {
+            --navy:    #0A2342;
+            --navy-light: #0f2f57;
+            --navy-dark:  #061828;
+            --gold:    #C9A84C;
+            --gold-light: #dfc06e;
+            --gold-dark:  #a8882e;
+            --white:   #FFFFFF;
+            --off-white: #F5F7FA;
+            --gray-100: #EEF1F6;
+            --gray-200: #D1D9E6;
+            --gray-400: #8A9BBF;
+            --gray-600: #4A5568;
+            --gray-800: #1A202C;
+            --success:  #22C55E;
+            --error:    #EF4444;
+            --shadow-sm:  0 1px 3px rgba(10,35,66,.08), 0 1px 2px rgba(10,35,66,.06);
+            --shadow-md:  0 4px 16px rgba(10,35,66,.12);
+            --shadow-lg:  0 12px 40px rgba(10,35,66,.16);
+            --shadow-xl:  0 24px 64px rgba(10,35,66,.20);
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 32px;
+            --transition: 0.28s cubic-bezier(.4,0,.2,1);
+            --font-body: 'Inter', sans-serif;
+            --font-head: 'Poppins', sans-serif;
+            --header-h: 76px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--font-body);
+            color: var(--gray-800);
+            background: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button { cursor: pointer; border: none; background: none; font-family: inherit; }
+        input, select, textarea { font-family: inherit; }
+
+        /* ============================================================
+           UTILITIES
+        ============================================================ */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .section { padding: 96px 0; }
+        .section--alt { background: var(--off-white); }
+        .section-tag {
+            display: inline-block;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: var(--font-head);
+            font-size: clamp(1.75rem, 4vw, 2.6rem);
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        .section-subtitle {
+            font-size: 1.05rem;
+            color: var(--gray-600);
+            max-width: 560px;
+            line-height: 1.7;
+        }
+        .section-header { text-align: center; margin-bottom: 56px; }
+        .section-header .section-subtitle { margin: 0 auto; }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 13px 28px;
+            border-radius: var(--radius-sm);
+            font-size: .95rem; font-weight: 600;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .btn-primary {
+            background: var(--gold);
+            color: var(--navy-dark);
+        }
+        .btn-primary:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(201,168,76,.35);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,.4);
+        }
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-2px);
+        }
+        .btn-navy {
+            background: var(--navy);
+            color: var(--white);
+        }
+        .btn-navy:hover {
+            background: var(--navy-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .btn-lg { padding: 16px 36px; font-size: 1rem; border-radius: var(--radius-md); }
+
+        /* Scroll animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+        .fade-up.delay-1 { transition-delay: .1s; }
+        .fade-up.delay-2 { transition-delay: .2s; }
+        .fade-up.delay-3 { transition-delay: .3s; }
+        .fade-up.delay-4 { transition-delay: .4s; }
+        .fade-up.delay-5 { transition-delay: .5s; }
+
+        /* ============================================================
+           HEADER
+        ============================================================ */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            height: var(--header-h);
+            display: flex; align-items: center;
+            background: rgba(10,35,66,.96);
+            backdrop-filter: blur(12px);
+            transition: box-shadow var(--transition), background var(--transition);
+        }
+        .header.scrolled {
+            box-shadow: 0 2px 24px rgba(10,35,66,.3);
+            background: rgba(10,35,66,.99);
+        }
+        .header-inner {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%;
+        }
+
+        /* Logo */
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-icon {
+            width: 38px; height: 38px;
+            background: var(--gold);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .logo-text {
+            font-family: var(--font-head);
+            font-size: 1.2rem; font-weight: 700;
+            color: var(--white);
+            letter-spacing: -.01em;
+        }
+        .logo-text span { color: var(--gold); }
+
+        /* Nav */
+        .nav { display: flex; align-items: center; gap: 4px; }
+        .nav a {
+            padding: 8px 14px;
+            color: rgba(255,255,255,.78);
+            font-size: .9rem; font-weight: 500;
+            border-radius: var(--radius-sm);
+            transition: color var(--transition), background var(--transition);
+        }
+        .nav a:hover { color: var(--white); background: rgba(255,255,255,.08); }
+
+        /* Header CTA */
+        .header-cta { display: flex; align-items: center; gap: 10px; }
+        .btn-login {
+            padding: 9px 20px;
+            color: rgba(255,255,255,.85);
+            font-size: .88rem; font-weight: 600;
+            border: 1.5px solid rgba(255,255,255,.2);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition);
+        }
+        .btn-login:hover { border-color: var(--gold); color: var(--gold); }
+        .btn-open {
+            padding: 9px 20px;
+            background: var(--gold);
+            color: var(--navy-dark);
+            font-size: .88rem; font-weight: 700;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition);
+        }
+        .btn-open:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(201,168,76,.4); }
+
+        /* Hamburger */
+        .hamburger { display: none; flex-direction: column; gap: 5px; padding: 6px; }
+        .hamburger span {
+            display: block; width: 24px; height: 2px;
+            background: var(--white); border-radius: 2px;
+            transition: all var(--transition);
+        }
+        .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+        /* Mobile nav */
+        .mobile-nav {
+            display: none;
+            position: fixed; top: var(--header-h); left: 0; right: 0;
+            background: var(--navy-dark);
+            padding: 20px 24px 28px;
+            z-index: 999;
+            border-top: 1px solid rgba(255,255,255,.08);
+            transform: translateY(-10px); opacity: 0;
+            transition: all var(--transition);
+            pointer-events: none;
+        }
+        .mobile-nav.open { display: block; transform: translateY(0); opacity: 1; pointer-events: all; }
+        .mobile-nav a {
+            display: block; padding: 12px 0;
+            color: rgba(255,255,255,.8); font-size: .95rem; font-weight: 500;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+        }
+        .mobile-nav a:last-of-type { border: none; }
+        .mobile-nav .mobile-cta { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
+        /* ============================================================
+           HERO
+        ============================================================ */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, #0d3060 100%);
+            display: flex; align-items: center;
+            padding-top: var(--header-h);
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: -40%; right: -20%;
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(201,168,76,.12) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute; bottom: -20%; left: -10%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(201,168,76,.07) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .hero-inner {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 64px; align-items: center;
+            padding: 80px 0 60px;
+        }
+        .hero-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(201,168,76,.12);
+            border: 1px solid rgba(201,168,76,.25);
+            color: var(--gold);
+            font-size: .78rem; font-weight: 700;
+            letter-spacing: .1em; text-transform: uppercase;
+            padding: 6px 14px; border-radius: 99px;
+            margin-bottom: 24px;
+        }
+        .hero-tag::before { content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; }
+        .hero-title {
+            font-family: var(--font-head);
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            font-weight: 800; color: var(--white);
+            line-height: 1.15; margin-bottom: 22px;
+        }
+        .hero-title .accent { color: var(--gold); }
+        .hero-subtitle {
+            font-size: 1.1rem; color: rgba(255,255,255,.72);
+            line-height: 1.75; margin-bottom: 36px; max-width: 480px;
+        }
+        .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+        .hero-badges {
+            display: flex; gap: 24px; flex-wrap: wrap;
+        }
+        .hero-badge {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .hero-badge-icon {
+            width: 36px; height: 36px; border-radius: 8px;
+            background: rgba(201,168,76,.15);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .hero-badge-text strong { display: block; color: var(--white); font-size: .95rem; font-weight: 700; }
+        .hero-badge-text span { font-size: .78rem; color: rgba(255,255,255,.55); }
+
+        /* Hero illustration */
+        .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+        .hero-card {
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.1);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            width: 100%; max-width: 380px;
+            position: relative; z-index: 1;
+        }
+        .hero-card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 28px;
+        }
+        .hero-card-logo { font-family: var(--font-head); font-size: .85rem; font-weight: 700; color: var(--white); }
+        .hero-card-chip {
+            width: 36px; height: 28px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            border-radius: 5px;
+        }
+        .hero-card-number {
+            font-size: 1.1rem; letter-spacing: .2em;
+            color: rgba(255,255,255,.7); margin-bottom: 28px;
+        }
+        .hero-card-info { display: flex; justify-content: space-between; }
+        .hero-card-info-item span { display: block; }
+        .hero-card-info-item .label { font-size: .68rem; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.45); }
+        .hero-card-info-item .value { font-size: .9rem; font-weight: 600; color: var(--white); }
+        .hero-card-stripe {
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        }
+
+        .hero-float {
+            position: absolute;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 12px 18px;
+            box-shadow: var(--shadow-lg);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .hero-float.f1 { top: -20px; right: -24px; }
+        .hero-float.f2 { bottom: 20px; left: -32px; }
+        .hero-float-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .hero-float-icon.green { background: #dcfce7; }
+        .hero-float-icon.blue { background: #dbeafe; }
+        .hero-float-txt strong { display: block; font-size: .88rem; font-weight: 700; color: var(--gray-800); }
+        .hero-float-txt span { font-size: .73rem; color: var(--gray-600); }
+
+        /* ============================================================
+           SERVICES
+        ============================================================ */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .service-card {
+            background: var(--white);
+            border: 1px solid var(--gray-100);
+            border-radius: var(--radius-lg);
+            padding: 32px 28px;
+            transition: all var(--transition);
+            position: relative; overflow: hidden;
+        }
+        .service-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: var(--gold);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform var(--transition);
+        }
+        .service-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
+        .service-card:hover::before { transform: scaleX(1); }
+
+        .service-icon {
+            width: 56px; height: 56px;
+            background: rgba(10,35,66,.06);
+            border-radius: var(--radius-md);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px;
+            transition: background var(--transition);
+        }
+        .service-card:hover .service-icon { background: rgba(201,168,76,.12); }
+        .service-card h3 {
+            font-family: var(--font-head); font-size: 1.05rem; font-weight: 700;
+            color: var(--navy); margin-bottom: 10px;
+        }
+        .service-card p { font-size: .88rem; color: var(--gray-600); line-height: 1.65; margin-bottom: 16px; }
+        .service-link {
+            font-size: .85rem; font-weight: 600; color: var(--gold);
+            display: inline-flex; align-items: center; gap: 4px;
+            transition: gap var(--transition);
+        }
+        .service-card:hover .service-link { gap: 8px; }
+
+        /* ============================================================
+           SIMULATOR
+        ============================================================ */
+        .simulator-wrapper {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            display: grid; grid-template-columns: 1.1fr .9fr;
+        }
+        .sim-left { padding: 48px; }
+        .sim-right {
+            background: linear-gradient(145deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 48px; display: flex; flex-direction: column; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        .sim-right::before {
+            content: '';
+            position: absolute; top: -50%; right: -30%;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(201,168,76,.15) 0%, transparent 65%);
+        }
+
+        .sim-group { margin-bottom: 28px; }
+        .sim-group label {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: .88rem; font-weight: 600; color: var(--gray-600);
+            margin-bottom: 12px;
+        }
+        .sim-group label .sim-val {
+            font-size: 1.05rem; font-weight: 700; color: var(--navy);
+        }
+
+        .slider-track { position: relative; height: 6px; }
+        .slider-track input[type=range] {
+            width: 100%; -webkit-appearance: none; appearance: none;
+            height: 6px; border-radius: 3px;
+            background: linear-gradient(to right, var(--gold) 0%, var(--gold) var(--pct, 50%), var(--gray-200) var(--pct, 50%));
+            outline: none; cursor: pointer;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 20px; height: 20px; border-radius: 50%;
+            background: var(--white); border: 3px solid var(--gold);
+            box-shadow: 0 2px 8px rgba(201,168,76,.4);
+            cursor: pointer; transition: transform var(--transition);
+        }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+        input[type=range]::-moz-range-thumb {
+            width: 20px; height: 20px; border-radius: 50%;
+            background: var(--white); border: 3px solid var(--gold);
+            box-shadow: 0 2px 8px rgba(201,168,76,.4);
+            cursor: pointer;
+        }
+        .slider-labels {
+            display: flex; justify-content: space-between;
+            font-size: .73rem; color: var(--gray-400); margin-top: 6px;
+        }
+
+        .sim-select {
+            width: 100%; padding: 12px 16px;
+            border: 2px solid var(--gray-200); border-radius: var(--radius-sm);
+            font-size: .9rem; color: var(--gray-800);
+            background: var(--white);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%238A9BBF' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 14px center;
+            cursor: pointer; transition: border-color var(--transition);
+        }
+        .sim-select:focus { outline: none; border-color: var(--gold); }
+
+        /* Result panel */
+        .sim-result-title {
+            font-family: var(--font-head); font-size: 1.1rem; font-weight: 700;
+            color: rgba(255,255,255,.7); margin-bottom: 28px;
+            text-transform: uppercase; letter-spacing: .06em; font-size: .8rem;
+        }
+        .sim-monthly {
+            margin-bottom: 32px;
+        }
+        .sim-monthly-label { font-size: .85rem; color: rgba(255,255,255,.55); margin-bottom: 4px; }
+        .sim-monthly-val {
+            font-family: var(--font-head); font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 800;
+            color: var(--gold); line-height: 1.1;
+        }
+        .sim-monthly-unit { font-size: 1.2rem; font-weight: 600; }
+
+        .sim-details { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+        .sim-detail-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 14px; border-radius: var(--radius-sm);
+            background: rgba(255,255,255,.06);
+        }
+        .sim-detail-row .key { font-size: .85rem; color: rgba(255,255,255,.55); }
+        .sim-detail-row .val { font-size: .9rem; font-weight: 700; color: var(--white); }
+        .sim-detail-row .val.gold { color: var(--gold); }
+
+        .sim-disclaimer { font-size: .73rem; color: rgba(255,255,255,.35); line-height: 1.5; }
+
+        /* ============================================================
+           FORM MODAL
+        ============================================================ */
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 2000;
+            background: rgba(6,24,40,.75); backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px;
+            opacity: 0; pointer-events: none;
+            transition: opacity var(--transition);
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
+        .modal {
+            background: var(--white); border-radius: var(--radius-xl);
+            width: 100%; max-width: 640px; max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(.96); transition: transform var(--transition);
+        }
+        .modal-overlay.open .modal { transform: scale(1); }
+        .modal-header {
+            padding: 28px 32px 0;
+            display: flex; justify-content: space-between; align-items: flex-start;
+        }
+        .modal-header h2 { font-family: var(--font-head); font-size: 1.4rem; color: var(--navy); }
+        .modal-header p { font-size: .88rem; color: var(--gray-600); margin-top: 4px; }
+        .modal-close {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--gray-100);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: background var(--transition);
+        }
+        .modal-close:hover { background: var(--gray-200); }
+        .modal-body { padding: 24px 32px 32px; }
+
+        /* Progress steps */
+        .form-steps {
+            display: flex; gap: 0; margin-bottom: 28px;
+        }
+        .form-step {
+            flex: 1; text-align: center; padding-bottom: 12px;
+            border-bottom: 3px solid var(--gray-200);
+            font-size: .78rem; font-weight: 600; color: var(--gray-400);
+            transition: all var(--transition);
+        }
+        .form-step.active { border-color: var(--gold); color: var(--gold); }
+        .form-step.done { border-color: var(--navy); color: var(--navy); }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-grid.full { grid-template-columns: 1fr; }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.span2 { grid-column: 1 / -1; }
+        .form-group label { font-size: .83rem; font-weight: 600; color: var(--gray-600); }
+        .form-group input,
+        .form-group select {
+            padding: 12px 14px;
+            border: 2px solid var(--gray-200); border-radius: var(--radius-sm);
+            font-size: .9rem; color: var(--gray-800);
+            transition: border-color var(--transition);
+            background: var(--white);
+        }
+        .form-group input:focus,
+        .form-group select:focus { outline: none; border-color: var(--gold); }
+        .form-group input.invalid { border-color: var(--error); }
+        .form-group input.valid { border-color: var(--success); }
+        .form-error { font-size: .75rem; color: var(--error); display: none; }
+        .form-error.show { display: block; }
+
+        .ssl-badge {
+            display: flex; align-items: center; gap: 8px;
+            font-size: .78rem; color: var(--gray-600);
+            margin-bottom: 20px;
+            padding: 8px 12px; background: var(--off-white);
+            border-radius: var(--radius-sm);
+        }
+        .ssl-badge svg { color: var(--success); }
+
+        .form-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; }
+        .form-panel { display: none; }
+        .form-panel.active { display: block; }
+
+        .form-success {
+            text-align: center; padding: 24px 0;
+        }
+        .form-success-icon {
+            width: 72px; height: 72px; background: #dcfce7;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .form-success h3 { font-family: var(--font-head); font-size: 1.4rem; color: var(--navy); margin-bottom: 10px; }
+        .form-success p { color: var(--gray-600); font-size: .9rem; line-height: 1.7; }
+
+        /* ============================================================
+           WHY US
+        ============================================================ */
+        .why-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+        }
+        .why-card {
+            text-align: center; padding: 32px 20px;
+            background: var(--white); border-radius: var(--radius-lg);
+            border: 1px solid var(--gray-100);
+            transition: all var(--transition);
+        }
+        .why-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        .why-icon {
+            width: 60px; height: 60px; border-radius: var(--radius-md);
+            background: linear-gradient(135deg, rgba(10,35,66,.06), rgba(10,35,66,.02));
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 18px;
+        }
+        .why-card h3 { font-family: var(--font-head); font-size: .98rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+        .why-card p { font-size: .85rem; color: var(--gray-600); line-height: 1.6; }
+
+        /* ============================================================
+           TESTIMONIALS
+        ============================================================ */
+        .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .testimonial-card {
+            background: var(--white); border: 1px solid var(--gray-100);
+            border-radius: var(--radius-lg); padding: 28px;
+            transition: all var(--transition);
+        }
+        .testimonial-card:hover { box-shadow: var(--shadow-md); border-color: transparent; }
+        .testimonial-stars { display: flex; gap: 3px; margin-bottom: 14px; }
+        .star { color: var(--gold); font-size: 1rem; }
+        .testimonial-text {
+            font-size: .9rem; color: var(--gray-600); line-height: 1.7;
+            font-style: italic; margin-bottom: 20px;
+        }
+        .testimonial-author { display: flex; align-items: center; gap: 12px; }
+        .author-avatar {
+            width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-head); font-size: .9rem; font-weight: 700;
+            color: var(--white); flex-shrink: 0;
+        }
+        .author-name { font-weight: 700; font-size: .9rem; color: var(--navy); }
+        .author-city { font-size: .78rem; color: var(--gray-400); }
+
+        /* ============================================================
+           COUNTERS
+        ============================================================ */
+        .counters {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 80px 0;
+        }
+        .counters-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+        .counter-item { text-align: center; }
+        .counter-num {
+            font-family: var(--font-head); font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800;
+            color: var(--gold); display: block; margin-bottom: 6px; line-height: 1;
+        }
+        .counter-label { font-size: .88rem; color: rgba(255,255,255,.65); }
+
+        /* ============================================================
+           FAQ
+        ============================================================ */
+        .faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+        .faq-item {
+            background: var(--white); border: 1px solid var(--gray-100);
+            border-radius: var(--radius-md); overflow: hidden;
+            transition: box-shadow var(--transition);
+        }
+        .faq-item.open { box-shadow: var(--shadow-md); }
+        .faq-question {
+            width: 100%; text-align: left; padding: 20px 24px;
+            display: flex; justify-content: space-between; align-items: center; gap: 16px;
+            font-size: .95rem; font-weight: 600; color: var(--navy);
+            transition: color var(--transition);
+        }
+        .faq-question:hover { color: var(--gold); }
+        .faq-icon {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: var(--gray-100); display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: background var(--transition), transform var(--transition);
+        }
+        .faq-item.open .faq-icon { background: var(--gold); transform: rotate(45deg); }
+        .faq-icon svg { transition: color var(--transition); }
+        .faq-item.open .faq-icon svg { color: var(--navy-dark); }
+        .faq-answer {
+            max-height: 0; overflow: hidden;
+            transition: max-height .4s ease, padding .4s ease;
+            font-size: .9rem; color: var(--gray-600); line-height: 1.7;
+            padding: 0 24px;
+        }
+        .faq-item.open .faq-answer { max-height: 300px; padding: 0 24px 20px; }
+
+        /* ============================================================
+           FOOTER
+        ============================================================ */
+        .footer {
+            background: var(--navy-dark); color: rgba(255,255,255,.7);
+        }
+        .footer-top { padding: 64px 0 48px; }
+        .footer-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 48px;
+        }
+        .footer-brand .logo { margin-bottom: 16px; }
+        .footer-brand p { font-size: .88rem; line-height: 1.7; max-width: 280px; }
+        .footer-socials { display: flex; gap: 10px; margin-top: 20px; }
+        .social-link {
+            width: 36px; height: 36px; border-radius: 8px;
+            background: rgba(255,255,255,.07);
+            display: flex; align-items: center; justify-content: center;
+            transition: background var(--transition);
+        }
+        .social-link:hover { background: var(--gold); }
+
+        .footer-col h4 {
+            font-family: var(--font-head); font-size: .9rem; font-weight: 700;
+            color: var(--white); margin-bottom: 18px; text-transform: uppercase; letter-spacing: .06em;
+        }
+        .footer-col ul { display: flex; flex-direction: column; gap: 10px; }
+        .footer-col ul a {
+            font-size: .85rem; color: rgba(255,255,255,.6);
+            transition: color var(--transition);
+        }
+        .footer-col ul a:hover { color: var(--gold); }
+
+        .footer-contact-item {
+            display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-start;
+        }
+        .footer-contact-item svg { flex-shrink: 0; margin-top: 2px; color: var(--gold); }
+        .footer-contact-item span { font-size: .85rem; color: rgba(255,255,255,.6); line-height: 1.5; }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,.07);
+            padding: 20px 0;
+        }
+        .footer-bottom-inner {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 12px;
+        }
+        .footer-bottom p { font-size: .78rem; color: rgba(255,255,255,.4); }
+        .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+        .footer-links a { font-size: .78rem; color: rgba(255,255,255,.4); transition: color var(--transition); }
+        .footer-links a:hover { color: var(--gold); }
+
+        /* ============================================================
+           COOKIE BANNER
+        ============================================================ */
+        .cookie-banner {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 3000;
+            background: var(--navy-dark);
+            border-top: 1px solid rgba(255,255,255,.08);
+            padding: 20px 24px;
+            display: flex; align-items: center; justify-content: space-between; gap: 20px;
+            flex-wrap: wrap;
+            transform: translateY(100%); transition: transform .5s ease;
+        }
+        .cookie-banner.show { transform: translateY(0); }
+        .cookie-text { font-size: .85rem; color: rgba(255,255,255,.75); flex: 1; min-width: 200px; }
+        .cookie-text a { color: var(--gold); text-decoration: underline; }
+        .cookie-btns { display: flex; gap: 10px; flex-shrink: 0; }
+        .btn-cookie-accept {
+            padding: 9px 20px; background: var(--gold); color: var(--navy-dark);
+            border-radius: var(--radius-sm); font-size: .85rem; font-weight: 700;
+            transition: all var(--transition);
+        }
+        .btn-cookie-accept:hover { background: var(--gold-light); }
+        .btn-cookie-refuse {
+            padding: 9px 20px; background: transparent; color: rgba(255,255,255,.6);
+            border: 1.5px solid rgba(255,255,255,.2); border-radius: var(--radius-sm);
+            font-size: .85rem; font-weight: 600;
+            transition: all var(--transition);
+        }
+        .btn-cookie-refuse:hover { border-color: rgba(255,255,255,.5); color: var(--white); }
+
+        /* ============================================================
+           ACPR BANNER
+        ============================================================ */
+        .acpr-bar {
+            background: rgba(10,35,66,.04); border-top: 1px solid var(--gray-100);
+            padding: 10px 0; text-align: center;
+        }
+        .acpr-bar p { font-size: .75rem; color: var(--gray-400); }
+        .acpr-bar span { color: var(--gold); font-weight: 600; }
+
+        /* ============================================================
+           RESPONSIVE
+        ============================================================ */
+        @media (max-width: 1024px) {
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .why-grid { grid-template-columns: repeat(2, 1fr); }
+            .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+            .counters-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+            .simulator-wrapper { grid-template-columns: 1fr; }
+            .sim-right { padding: 36px 48px; }
+        }
+        @media (max-width: 768px) {
+            :root { --header-h: 68px; }
+            .section { padding: 64px 0; }
+            .nav { display: none; }
+            .header-cta { display: none; }
+            .hamburger { display: flex; }
+            .hero-inner { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+            .hero-subtitle { margin: 0 auto 36px; }
+            .hero-btns { justify-content: center; }
+            .hero-badges { justify-content: center; }
+            .hero-visual { order: -1; }
+            .hero-card { max-width: 300px; }
+            .services-grid { grid-template-columns: 1fr; }
+            .why-grid { grid-template-columns: 1fr 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .counters-grid { grid-template-columns: 1fr 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.span2 { grid-column: 1; }
+            .sim-left { padding: 28px 24px; }
+            .sim-right { padding: 28px 24px; }
+        }
+        @media (max-width: 480px) {
+            .why-grid { grid-template-columns: 1fr; }
+            .counters-grid { grid-template-columns: 1fr 1fr; }
+            .hero-float { display: none; }
+            .footer-bottom-inner { flex-direction: column; text-align: center; }
+        }
+
+        /* ============================================================
+           LANGUAGE SWITCHER
+        ============================================================ */
+        .lang-switcher { position: relative; margin-left: 6px; }
+        .lang-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 7px 11px;
+            background: rgba(255,255,255,.08);
+            border: 1.5px solid rgba(255,255,255,.14);
+            border-radius: var(--radius-sm);
+            color: var(--white); font-size: .82rem; font-weight: 600;
+            cursor: pointer; transition: all var(--transition);
+        }
+        .lang-btn:hover { background: rgba(255,255,255,.14); border-color: var(--gold); color: var(--gold); }
+        .lang-flag { font-size: .95rem; line-height: 1; }
+        .lang-chevron { transition: transform var(--transition); flex-shrink: 0; }
+        .lang-switcher.open .lang-chevron { transform: rotate(180deg); }
+        .lang-menu {
+            position: absolute; top: calc(100% + 8px); right: 0;
+            background: var(--navy-dark);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: var(--radius-md);
+            min-width: 155px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.4);
+            overflow: hidden;
+            opacity: 0; pointer-events: none; transform: translateY(-6px);
+            transition: all var(--transition);
+            z-index: 200;
+        }
+        .lang-switcher.open .lang-menu { opacity: 1; pointer-events: all; transform: translateY(0); }
+        .lang-option {
+            display: flex; align-items: center; gap: 9px;
+            width: 100%; padding: 10px 14px;
+            font-size: .86rem; font-weight: 500; color: rgba(255,255,255,.72);
+            transition: background var(--transition), color var(--transition);
+            background: none; border: none; cursor: pointer;
+            font-family: var(--font-body);
+        }
+        .lang-option:hover { background: rgba(255,255,255,.07); color: var(--white); }
+        .lang-option.active { color: var(--gold); }
+        .lang-option .flag { font-size: 1rem; }
+
+        /* Mobile lang bar */
+        .mobile-lang {
+            display: flex; gap: 8px; margin: 12px 0 0;
+            padding-top: 14px; border-top: 1px solid rgba(255,255,255,.08);
+        }
+        .mobile-lang-btn {
+            flex: 1; padding: 9px 0;
+            background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+            border-radius: var(--radius-sm); color: rgba(255,255,255,.75);
+            font-size: .8rem; font-weight: 600; cursor: pointer;
+            transition: all var(--transition); font-family: var(--font-body);
+        }
+        .mobile-lang-btn:hover, .mobile-lang-btn.active { background: var(--gold); color: var(--navy-dark); border-color: var(--gold); }
+
+        /* ============================================================
+           DESIGN IMPROVEMENTS
+        ============================================================ */
+        /* Hero dot grid */
+        .hero-dots {
+            position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+            background-image: radial-gradient(rgba(255,255,255,.055) 1px, transparent 1px);
+            background-size: 30px 30px;
+            -webkit-mask-image: radial-gradient(ellipse 70% 70% at 60% 40%, black 0%, transparent 100%);
+            mask-image: radial-gradient(ellipse 70% 70% at 60% 40%, black 0%, transparent 100%);
+        }
+        .hero-orb {
+            position: absolute; border-radius: 50%; pointer-events: none;
+        }
+        .hero-orb.o1 {
+            width: 420px; height: 420px;
+            background: radial-gradient(circle, rgba(201,168,76,.10) 0%, transparent 68%);
+            top: -10%; right: -5%; animation: floatOrb 9s ease-in-out infinite;
+        }
+        .hero-orb.o2 {
+            width: 260px; height: 260px;
+            background: radial-gradient(circle, rgba(255,255,255,.04) 0%, transparent 68%);
+            bottom: 10%; left: 2%; animation: floatOrb 7s ease-in-out infinite reverse;
+        }
+        @keyframes floatOrb {
+            0%,100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-22px) scale(1.04); }
+        }
+
+        /* Section tag accent line */
+        .section-tag { position: relative; padding-left: 18px; }
+        .section-tag::before {
+            content: ''; position: absolute; left: 0; top: 50%;
+            transform: translateY(-50%);
+            width: 10px; height: 2px; background: var(--gold); border-radius: 2px;
+        }
+
+        /* Service icon colored variants */
+        .si-blue   { background: linear-gradient(135deg,#dbeafe,#eff6ff) !important; }
+        .si-green  { background: linear-gradient(135deg,#dcfce7,#f0fdf4) !important; }
+        .si-amber  { background: linear-gradient(135deg,#fef3c7,#fffbeb) !important; }
+        .si-pink   { background: linear-gradient(135deg,#fce7f3,#fdf2f8) !important; }
+        .si-indigo { background: linear-gradient(135deg,#e0e7ff,#eef2ff) !important; }
+        .si-teal   { background: linear-gradient(135deg,#ccfbf1,#f0fdfa) !important; }
+        .si-blue svg   { stroke:#3B82F6 !important; }
+        .si-green svg  { stroke:#22C55E !important; }
+        .si-amber svg  { stroke:#F59E0B !important; }
+        .si-pink svg   { stroke:#EC4899 !important; }
+        .si-indigo svg { stroke:#6366F1 !important; }
+        .si-teal svg   { stroke:#14B8A6 !important; }
+
+        /* Testimonial quote decoration */
+        .testimonial-card { position: relative; overflow: hidden; }
+        .tq-mark {
+            position: absolute; top: 12px; right: 18px;
+            font-size: 5rem; line-height: 1;
+            color: rgba(201,168,76,.10); font-family: Georgia, serif;
+            pointer-events: none; user-select: none;
+        }
+
+        /* Counter cards */
+        .counter-item {
+            background: rgba(255,255,255,.04);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255,255,255,.07);
+            padding: 28px 20px;
+            transition: background var(--transition), transform var(--transition);
+        }
+        .counter-item:hover { background: rgba(255,255,255,.08); transform: translateY(-3px); }
+
+        /* FAQ left gold border */
+        .faq-item { border-left: 3px solid transparent; }
+        .faq-item.open { border-left-color: var(--gold); }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed; bottom: 28px; right: 28px; z-index: 900;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--navy); border: 2px solid var(--gold);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--white);
+            opacity: 0; pointer-events: none; transform: translateY(12px);
+            transition: all var(--transition); box-shadow: var(--shadow-md);
+        }
+        .back-to-top.show { opacity: 1; pointer-events: all; transform: translateY(0); }
+        .back-to-top:hover { background: var(--gold); color: var(--navy-dark); }
+
+        /* CTA strip before footer */
+        .cta-strip {
+            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 50%, var(--gold-light) 100%);
+            padding: 56px 0;
+            text-align: center;
+        }
+        .cta-strip h2 {
+            font-family: var(--font-head); font-size: clamp(1.5rem,3vw,2.2rem);
+            font-weight: 800; color: var(--navy-dark); margin-bottom: 10px;
+        }
+        .cta-strip p { color: rgba(10,35,66,.65); font-size: 1rem; margin-bottom: 28px; }
+        .cta-strip .btn-navy { font-size: 1rem; padding: 15px 36px; border-radius: var(--radius-md); }
+    </style>
+</head>
+<body>
+
+<!-- ================================================================
+     HEADER
+================================================================ -->
+<header class="header" id="header">
+    <div class="container">
+        <div class="header-inner">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A2342" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="7" width="20" height="14" rx="2"/>
+                        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                        <line x1="12" y1="12" x2="12" y2="16"/>
+                        <line x1="10" y1="14" x2="14" y2="14"/>
+                    </svg>
+                </div>
+                <span class="logo-text">National<span>finance</span></span>
+            </a>
+
+            <nav class="nav">
+                <a href="#accueil" data-i18n="nav_home">Accueil</a>
+                <a href="#services" data-i18n="nav_offers">Nos Offres</a>
+                <a href="#simulation" data-i18n="nav_sim">Simulation</a>
+                <a href="#apropos" data-i18n="nav_about">À propos</a>
+                <a href="#contact" data-i18n="nav_contact">Contact</a>
+            </nav>
+
+            <div class="header-cta">
+                <div class="lang-switcher" id="langSwitcher">
+                    <button class="lang-btn" onclick="toggleLangMenu()" id="langBtn">
+                        <span class="lang-flag" id="langFlag">🇫🇷</span>
+                        <span id="langCode">FR</span>
+                        <svg class="lang-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="lang-menu" id="langMenu">
+                        <button class="lang-option active" onclick="setLang('fr')"><span class="flag">🇫🇷</span> Français</button>
+                        <button class="lang-option" onclick="setLang('en')"><span class="flag">🇬🇧</span> English</button>
+                        <button class="lang-option" onclick="setLang('de')"><span class="flag">🇩🇪</span> Deutsch</button>
+                        <button class="lang-option" onclick="setLang('es')"><span class="flag">🇪🇸</span> Español</button>
+                    </div>
+                </div>
+                <button class="btn-login" data-i18n="btn_login" onclick="window.location.href='client.html'">Connexion</button>
+                <button class="btn-open" data-i18n="btn_open" onclick="openModal()">Ouvrir un compte</button>
+            </div>
+
+            <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMobileMenu()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+    <a href="#accueil" data-i18n="nav_home" onclick="closeMobileMenu()">Accueil</a>
+    <a href="#services" data-i18n="nav_offers" onclick="closeMobileMenu()">Nos Offres</a>
+    <a href="#simulation" data-i18n="nav_sim" onclick="closeMobileMenu()">Simulation</a>
+    <a href="#apropos" data-i18n="nav_about" onclick="closeMobileMenu()">À propos</a>
+    <a href="#contact" data-i18n="nav_contact" onclick="closeMobileMenu()">Contact</a>
+    <div class="mobile-lang">
+        <button class="mobile-lang-btn active" id="mlFR" onclick="setLang('fr');closeMobileMenu()">🇫🇷 FR</button>
+        <button class="mobile-lang-btn" id="mlEN" onclick="setLang('en');closeMobileMenu()">🇬🇧 EN</button>
+        <button class="mobile-lang-btn" id="mlDE" onclick="setLang('de');closeMobileMenu()">🇩🇪 DE</button>
+        <button class="mobile-lang-btn" id="mlES" onclick="setLang('es');closeMobileMenu()">🇪🇸 ES</button>
+    </div>
+    <div class="mobile-cta">
+        <button class="btn btn-navy" style="justify-content:center" data-i18n="btn_login" onclick="window.location.href='client.html'">Connexion</button>
+        <button class="btn btn-primary" style="justify-content:center" data-i18n="btn_open" onclick="openModal()">Ouvrir un compte</button>
+    </div>
+</div>
+
+<!-- ================================================================
+     HERO
+================================================================ -->
+<section class="hero" id="accueil">
+    <div class="hero-dots"></div>
+    <div class="hero-orb o1"></div>
+    <div class="hero-orb o2"></div>
+    <div class="container">
+        <div class="hero-inner">
+            <div class="hero-content">
+                <div class="hero-tag" data-i18n="hero_tag">Agréé ACPR · Certifié SSL · RGPD Conforme</div>
+                <h1 class="hero-title" data-i18n-html="hero_title">Votre partenaire<br>financier de <span class="accent">confiance</span></h1>
+                <p class="hero-subtitle" data-i18n="hero_subtitle">Des solutions de financement personnalisées, rapides et sécurisées. Obtenez une réponse en moins de 24h, entièrement en ligne, sans déplacement.</p>
+                <div class="hero-btns">
+                    <button class="btn btn-primary btn-lg" onclick="document.getElementById('simulation').scrollIntoView({behavior:'smooth'})">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/><path d="M9 15h3l8.5-8.5a1.5 1.5 0 0 0-3-3L9 12v3z"/></svg>
+                        <span data-i18n="hero_btn_sim">Simuler un prêt</span>
+                    </button>
+                    <button class="btn btn-outline btn-lg" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">
+                        <span data-i18n="hero_btn_discover">Découvrir nos offres</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+                <div class="hero-badges">
+                    <div class="hero-badge">
+                        <div class="hero-badge-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <div class="hero-badge-text">
+                            <strong>+50 000</strong>
+                            <span data-i18n="badge_clients">clients actifs</span>
+                        </div>
+                    </div>
+                    <div class="hero-badge">
+                        <div class="hero-badge-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <div class="hero-badge-text">
+                            <strong>98%</strong>
+                            <span data-i18n="badge_sat">clients satisfaits</span>
+                        </div>
+                    </div>
+                    <div class="hero-badge">
+                        <div class="hero-badge-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div class="hero-badge-text">
+                            <strong data-i18n="badge_acpr">Agréé ACPR</strong>
+                            <span data-i18n="badge_acpr_sub">Autorité de contrôle</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <div class="hero-card-stripe"></div>
+                    <div class="hero-card-header">
+                        <span class="hero-card-logo">Nationalfinance</span>
+                        <div class="hero-card-chip"></div>
+                    </div>
+                    <div class="hero-card-number">•••• •••• •••• 4827</div>
+                    <div class="hero-card-info">
+                        <div class="hero-card-info-item">
+                            <span class="label">Titulaire</span>
+                            <span class="value">J. MARTIN</span>
+                        </div>
+                        <div class="hero-card-info-item">
+                            <span class="label">Expire</span>
+                            <span class="value">09/28</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-float f1">
+                    <div class="hero-float-icon green">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <div class="hero-float-txt">
+                        <strong>Demande acceptée</strong>
+                        <span>Il y a 2 minutes</span>
+                    </div>
+                </div>
+
+                <div class="hero-float f2">
+                    <div class="hero-float-icon blue">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <div class="hero-float-txt">
+                        <strong>Taux dès 3,8% TAEG</strong>
+                        <span>Prêt immobilier</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     SERVICES
+================================================================ -->
+<section class="section section--alt" id="services">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag" data-i18n="srv_tag">Nos solutions</span>
+            <h2 class="section-title" data-i18n="srv_title">Des offres adaptées à chaque projet</h2>
+            <p class="section-subtitle" data-i18n="srv_sub">Que vous souhaitiez financer un bien immobilier, un véhicule ou consolider vos crédits, nous avons la solution.</p>
+        </div>
+        <div class="services-grid" id="servicesGrid">
+
+            <div class="service-card fade-up delay-1">
+                <div class="service-icon si-blue">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="2"/></svg>
+                </div>
+                <h3 data-i18n="s1_title">Prêt personnel</h3>
+                <p data-i18n="s1_desc">Jusqu'à 75 000 € pour financer vos projets personnels : travaux, voyages, équipement. Taux fixe garanti.</p>
+                <a class="service-link" href="#simulation"><span data-i18n="s_sim">Simuler</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            </div>
+
+            <div class="service-card fade-up delay-2">
+                <div class="service-icon si-green">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </div>
+                <h3 data-i18n="s2_title">Prêt immobilier</h3>
+                <p data-i18n="s2_desc">Devenez propriétaire avec des taux compétitifs dès 3,8% TAEG. Accompagnement personnalisé de A à Z.</p>
+                <a class="service-link" href="#simulation"><span data-i18n="s_sim">Simuler</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            </div>
+
+            <div class="service-card fade-up delay-3">
+                <div class="service-icon si-amber">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <h3 data-i18n="s3_title">Crédit auto</h3>
+                <p data-i18n="s3_desc">Financez votre véhicule neuf ou d'occasion jusqu'à 60 000 €. Réponse immédiate, livraison sans attente.</p>
+                <a class="service-link" href="#simulation"><span data-i18n="s_sim">Simuler</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            </div>
+
+            <div class="service-card fade-up delay-1">
+                <div class="service-icon si-pink">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#EC4899" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                </div>
+                <h3 data-i18n="s4_title">Regroupement de crédits</h3>
+                <p data-i18n="s4_desc">Simplifiez votre gestion budgétaire en regroupant tous vos crédits en une seule mensualité réduite.</p>
+                <a class="service-link" href="#simulation"><span data-i18n="s_sim">Simuler</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            </div>
+
+            <div class="service-card fade-up delay-2">
+                <div class="service-icon si-indigo">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                </div>
+                <h3 data-i18n="s5_title">Épargne & placement</h3>
+                <p data-i18n="s5_desc">Faites fructifier votre argent avec nos livrets et placements sécurisés. Rendements attractifs et garantis.</p>
+                <a class="service-link" href="#contact"><span data-i18n="s_more">En savoir plus</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            </div>
+
+            <div class="service-card fade-up delay-3">
+                <div class="service-icon si-teal">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#14B8A6" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3 data-i18n="s6_title">Assurance emprunteur</h3>
+                <p data-i18n="s6_desc">Protégez votre prêt avec une assurance adaptée à votre profil. Couverture décès, invalidité et incapacité.</p>
+                <a class="service-link" href="#contact"><span data-i18n="s_more">En savoir plus</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     SIMULATOR
+================================================================ -->
+<section class="section" id="simulation">
+    <div class="container">
+        <div class="section-header fade-up">
+            <span class="section-tag" data-i18n="sim_tag">Simulateur</span>
+            <h2 class="section-title" data-i18n="sim_title">Calculez votre mensualité en temps réel</h2>
+            <p class="section-subtitle" data-i18n="sim_sub">Ajustez les paramètres et obtenez une estimation immédiate, sans engagement.</p>
+        </div>
+
+        <div class="simulator-wrapper fade-up">
+            <div class="sim-left">
+                <div class="sim-group">
+                    <label><span data-i18n="sim_type_label">Type de prêt</span> <span class="sim-val" id="simTypeName">Prêt personnel</span></label>
+                    <select class="sim-select" id="simType" onchange="updateSim()">
+                        <option value="personal" data-i18n-opt="sim_t1">Prêt personnel</option>
+                        <option value="immo" data-i18n-opt="sim_t2">Prêt immobilier</option>
+                        <option value="auto" data-i18n-opt="sim_t3">Crédit auto</option>
+                        <option value="regroupement" data-i18n-opt="sim_t4">Regroupement de crédits</option>
+                    </select>
+                </div>
+
+                <div class="sim-group">
+                    <label><span data-i18n="sim_amount_label">Montant souhaité</span> <span class="sim-val" id="simAmountLabel">20 000 €</span></label>
+                    <div class="slider-track">
+                        <input type="range" id="simAmount" min="1000" max="100000" step="500" value="20000" oninput="updateSim()">
+                    </div>
+                    <div class="slider-labels"><span>1 000 €</span><span>100 000 €</span></div>
+                </div>
+
+                <div class="sim-group">
+                    <label><span data-i18n="sim_dur_label">Durée de remboursement</span> <span class="sim-val" id="simDurationLabel">48 mois</span></label>
+                    <div class="slider-track">
+                        <input type="range" id="simDuration" min="6" max="120" step="6" value="48" oninput="updateSim()">
+                    </div>
+                    <div class="slider-labels"><span>6 mois</span><span>120 mois</span></div>
+                </div>
+
+                <button class="btn btn-primary btn-lg" style="width:100%;justify-content:center;margin-top:8px" onclick="openModal()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <span data-i18n="sim_btn">Faire une demande</span>
+                </button>
+            </div>
+
+            <div class="sim-right">
+                <p class="sim-result-title" data-i18n="sim_res_title">Résultat de votre simulation</p>
+                <div class="sim-monthly">
+                    <div class="sim-monthly-label" data-i18n="sim_monthly_label">Mensualité estimée</div>
+                    <div class="sim-monthly-val"><span id="simMonthly">431</span> <span class="sim-monthly-unit">€/mois</span></div>
+                </div>
+                <div class="sim-details">
+                    <div class="sim-detail-row">
+                        <span class="key" data-i18n="sim_d_amount">Montant emprunté</span>
+                        <span class="val" id="simResAmount">20 000 €</span>
+                    </div>
+                    <div class="sim-detail-row">
+                        <span class="key" data-i18n="sim_d_dur">Durée</span>
+                        <span class="val" id="simResDuration">48 mois</span>
+                    </div>
+                    <div class="sim-detail-row">
+                        <span class="key" data-i18n="sim_d_taeg">TAEG indicatif</span>
+                        <span class="val gold" id="simResTaeg">5,90%</span>
+                    </div>
+                    <div class="sim-detail-row">
+                        <span class="key" data-i18n="sim_d_cost">Coût total du crédit</span>
+                        <span class="val" id="simResCost">680 €</span>
+                    </div>
+                    <div class="sim-detail-row">
+                        <span class="key" data-i18n="sim_d_total">Total à rembourser</span>
+                        <span class="val" id="simResTotal">20 680 €</span>
+                    </div>
+                </div>
+                <p class="sim-disclaimer" data-i18n="sim_disclaimer">Simulation non contractuelle. TAEG calculé à titre indicatif. Votre taux définitif sera déterminé en fonction de votre dossier.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     WHY US
+================================================================ -->
+<section class="section section--alt" id="apropos">
+    <div class="container">
+        <div class="section-header fade-up">
+            <span class="section-tag" data-i18n="why_tag">Nos engagements</span>
+            <h2 class="section-title" data-i18n="why_title">Pourquoi choisir Nationalfinance ?</h2>
+            <p class="section-subtitle" data-i18n="why_sub">Rapidité, transparence et sécurité — trois piliers au cœur de chacune de nos offres.</p>
+        </div>
+        <div class="why-grid" id="whyGrid">
+            <div class="why-card fade-up delay-1">
+                <div class="why-icon si-blue">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <h3 data-i18n="w1_title">Réponse sous 24h</h3>
+                <p data-i18n="w1_desc">Votre demande est étudiée rapidement par nos équipes. Vous recevez une réponse de principe en moins d'une journée.</p>
+            </div>
+            <div class="why-card fade-up delay-2">
+                <div class="why-icon si-indigo">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </div>
+                <h3 data-i18n="w2_title">100% en ligne</h3>
+                <p data-i18n="w2_desc">Pas de déplacement, pas de paperasse inutile. Déposez votre dossier depuis chez vous en quelques minutes.</p>
+            </div>
+            <div class="why-card fade-up delay-3">
+                <div class="why-icon si-green">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </div>
+                <h3 data-i18n="w3_title">Données sécurisées</h3>
+                <p data-i18n="w3_desc">Chiffrement SSL 256 bits, conformité RGPD totale. Vos données personnelles et financières sont protégées.</p>
+            </div>
+            <div class="why-card fade-up delay-4">
+                <div class="why-icon si-amber">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.24h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.05 6.05l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <h3 data-i18n="w4_title">Conseillers 6j/7</h3>
+                <p data-i18n="w4_desc">Une équipe de spécialistes disponibles du lundi au samedi pour vous accompagner et répondre à vos questions.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     TESTIMONIALS
+================================================================ -->
+<section class="section">
+    <div class="container">
+        <div class="section-header fade-up">
+            <span class="section-tag" data-i18n="tst_tag">Témoignages</span>
+            <h2 class="section-title" data-i18n="tst_title">Ils nous font confiance</h2>
+            <p class="section-subtitle" data-i18n="tst_sub">Plus de 50 000 clients satisfaits témoignent de leur expérience avec Nationalfinance.</p>
+        </div>
+        <div class="testimonials-grid" id="testimonialGrid">
+
+            <div class="testimonial-card fade-up delay-1">
+                <span class="tq-mark">"</span>
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text" data-i18n="t1_text">"J'ai obtenu mon prêt personnel en moins de 48h. Le processus était simple, transparent, et le conseiller très à l'écoute. Je recommande vivement !"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background:linear-gradient(135deg,#0A2342,#1a4080)">SM</div>
+                    <div>
+                        <div class="author-name">Sophie M.</div>
+                        <div class="author-city">Lyon, 69</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card fade-up delay-2">
+                <span class="tq-mark">"</span>
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text" data-i18n="t2_text">"Nationalfinance a financé mon projet immobilier avec un taux excellent. Le suivi de dossier en ligne est très pratique, et tout s'est fait sans stress."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background:linear-gradient(135deg,#C9A84C,#a8882e)">PD</div>
+                    <div>
+                        <div class="author-name">Pierre D.</div>
+                        <div class="author-city">Bordeaux, 33</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card fade-up delay-3">
+                <span class="tq-mark">"</span>
+                <div class="testimonial-stars">★★★★<span style="color:var(--gray-200)">★</span></div>
+                <p class="testimonial-text" data-i18n="t3_text">"Le regroupement de crédits m'a permis de réduire mes mensualités de 40%. L'équipe est professionnelle et réactive. Je suis enfin sereine financièrement."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background:linear-gradient(135deg,#22C55E,#16a34a)">AL</div>
+                    <div>
+                        <div class="author-name">Amélie L.</div>
+                        <div class="author-city">Paris, 75</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     COUNTERS
+================================================================ -->
+<section class="counters">
+    <div class="container">
+        <div class="counters-grid">
+            <div class="counter-item fade-up delay-1">
+                <span class="counter-num" data-target="50000" data-suffix="+" data-prefix="">0</span>
+                <span class="counter-label" data-i18n="cnt1">Clients actifs</span>
+            </div>
+            <div class="counter-item fade-up delay-2">
+                <span class="counter-num" data-target="95" data-suffix="%" data-prefix="">0</span>
+                <span class="counter-label" data-i18n="cnt2">Taux d'acceptation</span>
+            </div>
+            <div class="counter-item fade-up delay-3">
+                <span class="counter-num" data-target="12" data-suffix="" data-prefix="">0</span>
+                <span class="counter-label" data-i18n="cnt3">Ans d'existence</span>
+            </div>
+            <div class="counter-item fade-up delay-4">
+                <span class="counter-num" data-target="48" data-suffix="/5" data-prefix="" data-decimal="true">0</span>
+                <span class="counter-label" data-i18n="cnt4">Note moyenne clients</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     FAQ
+================================================================ -->
+<section class="section section--alt" id="faq">
+    <div class="container">
+        <div class="section-header fade-up">
+            <span class="section-tag" data-i18n="faq_tag">FAQ</span>
+            <h2 class="section-title" data-i18n="faq_title">Questions fréquentes</h2>
+            <p class="section-subtitle" data-i18n="faq_sub">Vous avez des questions ? Nous avons les réponses.</p>
+        </div>
+        <div class="faq-list" id="faqList">
+
+            <div class="faq-item fade-up delay-1">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Quelles sont les conditions pour obtenir un prêt ?
+                    <span class="faq-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </span>
+                </button>
+                <div class="faq-answer">Pour obtenir un prêt, vous devez être majeur, résident en France, disposer de revenus stables et ne pas être en situation de surendettement. Nos conseillers étudient chaque dossier de façon personnalisée pour vous proposer l'offre la mieux adaptée à votre situation.</div>
+            </div>
+
+            <div class="faq-item fade-up delay-2">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Quel est le délai de réponse pour une demande de prêt ?
+                    <span class="faq-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </span>
+                </button>
+                <div class="faq-answer">Nous nous engageons à vous apporter une réponse de principe sous 24 heures ouvrées. Une fois votre dossier complet, le versement des fonds intervient généralement sous 7 à 14 jours, selon le type de financement et le délai légal de rétractation de 14 jours.</div>
+            </div>
+
+            <div class="faq-item fade-up delay-3">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Puis-je rembourser mon prêt par anticipation ?
+                    <span class="faq-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </span>
+                </button>
+                <div class="faq-answer">Oui, le remboursement anticipé est toujours possible. Pour un prêt personnel, les indemnités de remboursement anticipé sont plafonnées à 1% du capital restant dû si la durée restante est supérieure à un an, ou 0,5% si elle est inférieure. Pour les prêts immobiliers, elles sont plafonnées à 6 mois d'intérêts ou 3% du capital restant dû.</div>
+            </div>
+
+            <div class="faq-item fade-up delay-1">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Quels documents sont nécessaires pour constituer mon dossier ?
+                    <span class="faq-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </span>
+                </button>
+                <div class="faq-answer">Les documents standard à fournir sont : une pièce d'identité valide, un justificatif de domicile de moins de 3 mois, vos 3 derniers bulletins de salaire ou bilans comptables (pour les indépendants), votre dernier avis d'imposition, et un RIB. Des documents complémentaires peuvent être demandés selon la nature du projet.</div>
+            </div>
+
+            <div class="faq-item fade-up delay-2">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Mes données personnelles sont-elles protégées ?
+                    <span class="faq-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </span>
+                </button>
+                <div class="faq-answer">La protection de vos données est notre priorité absolue. Nous utilisons un chiffrement SSL 256 bits pour toutes les communications. Nous sommes pleinement conformes au RGPD et vos données ne sont jamais vendues à des tiers. Vous disposez d'un droit d'accès, de rectification et de suppression à tout moment.</div>
+            </div>
+
+            <div class="faq-item fade-up delay-3">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Le TAEG peut-il varier après la signature du contrat ?
+                    <span class="faq-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </span>
+                </button>
+                <div class="faq-answer">Non. Pour nos prêts à taux fixe, le TAEG est garanti et ne peut pas changer pendant toute la durée du contrat. Vous savez exactement dès le départ combien vous rembourserez chaque mois. Nous proposons également des offres à taux variable dans certains cas, mais cela est clairement indiqué dans le contrat avec les conditions de variation.</div>
+            </div>
+
+            <div class="faq-item fade-up delay-1">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Que se passe-t-il en cas de difficultés de remboursement ?
+                    <span class="faq-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </span>
+                </button>
+                <div class="faq-answer">Si vous rencontrez des difficultés financières, contactez-nous immédiatement. Nous privilégions toujours le dialogue et proposons des solutions adaptées : report d'échéances, modulation des mensualités, ou restructuration du prêt. Nos conseillers sont formés pour vous accompagner dans les situations difficiles avec bienveillance et efficacité.</div>
+            </div>
+
+            <div class="faq-item fade-up delay-2">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Puis-je souscrire un prêt si je suis en CDD ou indépendant ?
+                    <span class="faq-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </span>
+                </button>
+                <div class="faq-answer">Oui, nous étudions les dossiers de toutes les situations professionnelles : CDI, CDD, intérimaires, indépendants, professions libérales et retraités. Pour les CDD et indépendants, une ancienneté et des revenus réguliers suffisants sont généralement requis. Chaque dossier est examiné individuellement pour proposer la meilleure solution possible.</div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     CONTACT
+================================================================ -->
+<section class="section" id="contact">
+    <div class="container">
+        <div class="section-header fade-up">
+            <span class="section-tag" data-i18n="ct_tag">Contact</span>
+            <h2 class="section-title" data-i18n="ct_title">Nous sommes à votre écoute</h2>
+            <p class="section-subtitle" data-i18n="ct_sub">Notre équipe de conseillers est disponible du lundi au samedi pour répondre à toutes vos questions.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+            <div class="why-card fade-up delay-1" style="text-align:left;padding:28px">
+                <div class="why-icon" style="margin:0 0 16px">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0A2342" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.24h3a2 2 0 0 1 2 1.72c.12.96.34 1.9.68 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.05 6.05l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.56 2.81.68A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <h3 style="font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:6px">Téléphone</h3>
+                <p style="font-size:.88rem;color:var(--gray-600);margin-bottom:4px">Lun – Sam : 8h – 20h</p>
+                <p style="font-size:1rem;font-weight:700;color:var(--navy)">01 23 45 67 89</p>
+            </div>
+            <div class="why-card fade-up delay-2" style="text-align:left;padding:28px">
+                <div class="why-icon" style="margin:0 0 16px">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0A2342" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <h3 style="font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:6px">Email</h3>
+                <p style="font-size:.88rem;color:var(--gray-600);margin-bottom:4px">Réponse sous 24h ouvrées</p>
+                <p style="font-size:1rem;font-weight:700;color:var(--navy)">support@nationalfinance.fr</p>
+            </div>
+            <div class="why-card fade-up delay-3" style="text-align:left;padding:28px">
+                <div class="why-icon" style="margin:0 0 16px">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0A2342" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <h3 style="font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:6px">Adresse</h3>
+                <p style="font-size:.88rem;color:var(--gray-600);margin-bottom:4px">Siège social</p>
+                <p style="font-size:.9rem;font-weight:600;color:var(--navy)">42 Avenue des Finances<br>75008 Paris, France</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Strip -->
+<section class="cta-strip">
+    <div class="container">
+        <h2 data-i18n="cta_title">Prêt à concrétiser votre projet ?</h2>
+        <p data-i18n="cta_sub">Rejoignez plus de 50 000 clients qui nous font confiance.</p>
+        <button class="btn btn-navy btn-lg" onclick="openModal()" data-i18n="cta_btn">Faire une demande gratuite</button>
+    </div>
+</section>
+
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Retour en haut">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- ================================================================
+     FOOTER
+================================================================ -->
+<footer class="footer">
+    <div class="footer-top">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <div class="logo-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A2342" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="7" width="20" height="14" rx="2"/>
+                                <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                                <line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>
+                            </svg>
+                        </div>
+                        <span class="logo-text">National<span>finance</span></span>
+                    </a>
+                    <p style="margin-top:14px">Votre partenaire financier de confiance depuis 2013. Des solutions de financement simples, rapides et sécurisées pour tous vos projets.</p>
+                    <div class="footer-socials">
+                        <a class="social-link" href="#" aria-label="LinkedIn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+                        </a>
+                        <a class="social-link" href="#" aria-label="Twitter/X">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a class="social-link" href="#" aria-label="Facebook">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Nos offres</h4>
+                    <ul>
+                        <li><a href="#services">Prêt personnel</a></li>
+                        <li><a href="#services">Prêt immobilier</a></li>
+                        <li><a href="#services">Crédit auto</a></li>
+                        <li><a href="#services">Regroupement de crédits</a></li>
+                        <li><a href="#services">Épargne & placement</a></li>
+                        <li><a href="#services">Assurance emprunteur</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Informations</h4>
+                    <ul>
+                        <li><a href="#">Mentions légales</a></li>
+                        <li><a href="#">CGU</a></li>
+                        <li><a href="#">Politique RGPD</a></li>
+                        <li><a href="#">Gestion des cookies</a></li>
+                        <li><a href="#">Tarifs & frais</a></li>
+                        <li><a href="#">Recrutement</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <div class="footer-contact-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <span>42 Avenue des Finances<br>75008 Paris, France</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.24h3a2 2 0 0 1 2 1.72c.12.96.34 1.9.68 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.05 6.05l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.56 2.81.68A2 2 0 0 1 22 16.92z"/></svg>
+                        <span>01 23 45 67 89</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <span>support@nationalfinance.fr</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="footer-bottom-inner">
+                <p>© 2025 Nationalfinance. Tous droits réservés. <span style="color:rgba(255,255,255,.25)">|</span> Agréé par l'ACPR sous le numéro fictif <span style="color:var(--gold)">814825</span></p>
+                <div class="footer-links">
+                    <a href="#">Mentions légales</a>
+                    <a href="#">CGU</a>
+                    <a href="#">Confidentialité</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ================================================================
+     FORM MODAL
+================================================================ -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <div>
+                <h2>Demande de financement</h2>
+                <p>Complétez le formulaire — réponse sous 24h</p>
+            </div>
+            <button class="modal-close" onclick="closeModal()" aria-label="Fermer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-steps">
+                <div class="form-step active" id="step1Indicator">1 — Identité</div>
+                <div class="form-step" id="step2Indicator">2 — Projet</div>
+                <div class="form-step" id="step3Indicator">3 — Situation</div>
+            </div>
+
+            <form id="loanForm" novalidate>
+                <!-- STEP 1 -->
+                <div class="form-panel active" id="formStep1">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fNom">Nom *</label>
+                            <input type="text" id="fNom" placeholder="Dupont" required>
+                            <span class="form-error" id="errNom">Veuillez saisir votre nom.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="fPrenom">Prénom *</label>
+                            <input type="text" id="fPrenom" placeholder="Jean" required>
+                            <span class="form-error" id="errPrenom">Veuillez saisir votre prénom.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="fEmail">Email *</label>
+                            <input type="email" id="fEmail" placeholder="jean.dupont@email.fr" required>
+                            <span class="form-error" id="errEmail">Email invalide.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="fTel">Téléphone *</label>
+                            <input type="tel" id="fTel" placeholder="06 12 34 56 78" required>
+                            <span class="form-error" id="errTel">Numéro invalide.</span>
+                        </div>
+                    </div>
+                    <div class="form-nav">
+                        <span style="font-size:.8rem;color:var(--gray-400)">Étape 1 sur 3</span>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(1)">Suivant →</button>
+                    </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="form-panel" id="formStep2">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fMontant">Montant souhaité (€) *</label>
+                            <input type="number" id="fMontant" placeholder="20000" min="1000" max="100000" required>
+                            <span class="form-error" id="errMontant">Montant entre 1 000 € et 100 000 €.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="fDuree">Durée souhaitée *</label>
+                            <select id="fDuree" required>
+                                <option value="">-- Choisir --</option>
+                                <option>12 mois</option><option>24 mois</option>
+                                <option>36 mois</option><option>48 mois</option>
+                                <option>60 mois</option><option>84 mois</option>
+                                <option>120 mois</option>
+                            </select>
+                            <span class="form-error" id="errDuree">Veuillez sélectionner une durée.</span>
+                        </div>
+                        <div class="form-group span2">
+                            <label for="fTypeP">Type de prêt *</label>
+                            <select id="fTypeP" required>
+                                <option value="">-- Choisir --</option>
+                                <option>Prêt personnel</option>
+                                <option>Prêt immobilier</option>
+                                <option>Crédit auto</option>
+                                <option>Regroupement de crédits</option>
+                            </select>
+                            <span class="form-error" id="errTypeP">Veuillez sélectionner un type de prêt.</span>
+                        </div>
+                    </div>
+                    <div class="form-nav">
+                        <button type="button" class="btn btn-navy" onclick="prevStep(2)">← Retour</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(2)">Suivant →</button>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="form-panel" id="formStep3">
+                    <div class="ssl-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        Formulaire sécurisé SSL 256 bits — Vos données sont protégées
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fRevenus">Revenus mensuels nets (€) *</label>
+                            <input type="number" id="fRevenus" placeholder="2500" min="0" required>
+                            <span class="form-error" id="errRevenus">Veuillez indiquer vos revenus.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="fSituation">Situation professionnelle *</label>
+                            <select id="fSituation" required>
+                                <option value="">-- Choisir --</option>
+                                <option>CDI</option>
+                                <option>CDD</option>
+                                <option>Indépendant / Freelance</option>
+                                <option>Retraité</option>
+                                <option>Autre</option>
+                            </select>
+                            <span class="form-error" id="errSituation">Veuillez sélectionner votre situation.</span>
+                        </div>
+                    </div>
+                    <div class="form-nav">
+                        <button type="button" class="btn btn-navy" onclick="prevStep(3)">← Retour</button>
+                        <button type="button" class="btn btn-primary" onclick="submitForm()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            Envoyer ma demande
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUCCESS -->
+                <div class="form-panel" id="formSuccess">
+                    <div class="form-success">
+                        <div class="form-success-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <h3>Demande bien reçue !</h3>
+                        <p>Merci pour votre confiance. Un conseiller Nationalfinance vous contactera dans les <strong>24 heures ouvrées</strong> pour étudier votre dossier.<br><br>Un email de confirmation a été envoyé à votre adresse.</p>
+                        <button type="button" class="btn btn-primary btn-lg" style="margin-top:24px" onclick="closeModal()">Fermer</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================
+     COOKIE BANNER
+================================================================ -->
+<div class="cookie-banner" id="cookieBanner">
+    <p class="cookie-text" data-i18n="cookie_text">
+        Nous utilisons des cookies pour améliorer votre expérience et analyser notre trafic. En continuant à naviguer, vous acceptez notre <a href="#">politique de confidentialité</a> et l'utilisation des cookies conformément au RGPD.
+    </p>
+    <div class="cookie-btns">
+        <button class="btn-cookie-refuse" data-i18n="cookie_refuse" onclick="dismissCookie()">Refuser</button>
+        <button class="btn-cookie-accept" data-i18n="cookie_accept" onclick="acceptCookie()">Accepter</button>
+    </div>
+</div>
+
+<!-- ================================================================
+     JAVASCRIPT
+================================================================ -->
+<script>
+    /* ---- Header scroll effect ---- */
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    /* ---- Mobile menu ---- */
+    function toggleMobileMenu() {
+        const btn = document.getElementById('hamburger');
+        const nav = document.getElementById('mobileNav');
+        btn.classList.toggle('open');
+        nav.classList.toggle('open');
+    }
+    function closeMobileMenu() {
+        document.getElementById('hamburger').classList.remove('open');
+        document.getElementById('mobileNav').classList.remove('open');
+    }
+
+    /* ---- Scroll animations ---- */
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    /* ---- Counter animation ---- */
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            const target = parseInt(el.dataset.target);
+            const suffix = el.dataset.suffix || '';
+            const isDecimal = el.dataset.decimal === 'true';
+            const duration = 1800;
+            const start = performance.now();
+            function tick(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const ease = 1 - Math.pow(1 - progress, 3);
+                const value = isDecimal
+                    ? (ease * (target / 10)).toFixed(1)
+                    : Math.round(ease * target).toLocaleString('fr-FR');
+                el.textContent = value + suffix;
+                if (progress < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+            counterObserver.unobserve(el);
+        });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.counter-num').forEach(el => counterObserver.observe(el));
+
+    /* ---- Simulator ---- */
+    const taegRates = { personal: 5.9, immo: 3.8, auto: 4.5, regroupement: 5.2 };
+    const typeNames  = { personal: 'Prêt personnel', immo: 'Prêt immobilier', auto: 'Crédit auto', regroupement: 'Regroupement de crédits' };
+
+    function fmt(n) { return new Intl.NumberFormat('fr-FR').format(Math.round(n)); }
+    function fmtCurrency(n) { return fmt(n) + ' €'; }
+
+    function updateSliderGradient(el) {
+        const min = parseFloat(el.min), max = parseFloat(el.max), val = parseFloat(el.value);
+        const pct = ((val - min) / (max - min) * 100).toFixed(1) + '%';
+        el.style.setProperty('--pct', pct);
+    }
+
+    function updateSim() {
+        const amount   = parseFloat(document.getElementById('simAmount').value);
+        const months   = parseFloat(document.getElementById('simDuration').value);
+        const typeKey  = document.getElementById('simType').value;
+        const taeg     = taegRates[typeKey];
+        const r        = taeg / 100 / 12;
+        let monthly;
+        if (r === 0) {
+            monthly = amount / months;
+        } else {
+            monthly = amount * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1);
+        }
+        const total = monthly * months;
+        const cost  = total - amount;
+
+        document.getElementById('simAmountLabel').textContent  = fmtCurrency(amount);
+        document.getElementById('simDurationLabel').textContent = months + ' mois';
+        document.getElementById('simTypeName').textContent      = typeNames[typeKey];
+        document.getElementById('simMonthly').textContent       = fmt(monthly);
+        document.getElementById('simResAmount').textContent     = fmtCurrency(amount);
+        document.getElementById('simResDuration').textContent   = months + ' mois';
+        document.getElementById('simResTaeg').textContent       = taeg.toFixed(2).replace('.', ',') + '%';
+        document.getElementById('simResCost').textContent       = fmtCurrency(cost);
+        document.getElementById('simResTotal').textContent      = fmtCurrency(total);
+
+        updateSliderGradient(document.getElementById('simAmount'));
+        updateSliderGradient(document.getElementById('simDuration'));
+    }
+
+    document.getElementById('simAmount').addEventListener('input', updateSim);
+    document.getElementById('simDuration').addEventListener('input', updateSim);
+    document.getElementById('simType').addEventListener('change', updateSim);
+    updateSim();
+
+    /* ---- Modal ---- */
+    function openModal() {
+        document.getElementById('modalOverlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+        showStep(1);
+    }
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    function handleOverlayClick(e) {
+        if (e.target === document.getElementById('modalOverlay')) closeModal();
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    /* ---- Multi-step form ---- */
+    let currentStep = 1;
+
+    function showStep(n) {
+        currentStep = n;
+        [1, 2, 3, 'Success'].forEach(s => {
+            const panelId = s === 'Success' ? 'formSuccess' : 'formStep' + s;
+            const panel = document.getElementById(panelId);
+            if (panel) panel.classList.toggle('active', s === n || (s === 'Success' && n === 4));
+        });
+        [1, 2, 3].forEach(s => {
+            const ind = document.getElementById('step' + s + 'Indicator');
+            if (ind) {
+                ind.classList.remove('active', 'done');
+                if (s === n) ind.classList.add('active');
+                else if (s < n) ind.classList.add('done');
+            }
+        });
+    }
+
+    function validateStep(step) {
+        let valid = true;
+
+        function check(id, errId, condition) {
+            const el = document.getElementById(id);
+            const err = document.getElementById(errId);
+            if (condition) {
+                el.classList.remove('invalid'); el.classList.add('valid');
+                err.classList.remove('show');
+            } else {
+                el.classList.add('invalid'); el.classList.remove('valid');
+                err.classList.add('show');
+                valid = false;
+            }
+        }
+
+        if (step === 1) {
+            check('fNom',    'errNom',    document.getElementById('fNom').value.trim().length >= 2);
+            check('fPrenom', 'errPrenom', document.getElementById('fPrenom').value.trim().length >= 2);
+            check('fEmail',  'errEmail',  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('fEmail').value));
+            check('fTel',    'errTel',    /^[\d\s\+\-\.]{9,14}$/.test(document.getElementById('fTel').value));
+        } else if (step === 2) {
+            const m = parseFloat(document.getElementById('fMontant').value);
+            check('fMontant', 'errMontant', !isNaN(m) && m >= 1000 && m <= 100000);
+            check('fDuree',   'errDuree',   document.getElementById('fDuree').value !== '');
+            check('fTypeP',   'errTypeP',   document.getElementById('fTypeP').value !== '');
+        } else if (step === 3) {
+            const r = parseFloat(document.getElementById('fRevenus').value);
+            check('fRevenus',    'errRevenus',    !isNaN(r) && r >= 0);
+            check('fSituation',  'errSituation',  document.getElementById('fSituation').value !== '');
+        }
+        return valid;
+    }
+
+    function nextStep(current) {
+        if (validateStep(current)) showStep(current + 1);
+    }
+    function prevStep(current) { showStep(current - 1); }
+
+    async function submitForm() {
+        if (!validateStep(3)) return;
+        const btn = document.querySelector('#formStep3 .btn-primary');
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin .7s linear infinite"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg> Envoi en cours…';
+        btn.disabled = true;
+        try {
+            await fetch('/api/requests', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nom:       document.getElementById('fNom').value.trim(),
+                    prenom:    document.getElementById('fPrenom').value.trim(),
+                    email:     document.getElementById('fEmail').value.trim(),
+                    telephone: document.getElementById('fTel').value.trim(),
+                    montant:   parseFloat(document.getElementById('fMontant').value),
+                    duree:     document.getElementById('fDuree').value,
+                    type_pret: document.getElementById('fTypeP').value,
+                    revenus:   parseFloat(document.getElementById('fRevenus').value),
+                    situation: document.getElementById('fSituation').value,
+                })
+            });
+        } catch { /* offline fallback – continue to success screen */ }
+        showStep(4);
+        btn.innerHTML = orig; btn.disabled = false;
+    }
+
+    /* ---- FAQ accordion ---- */
+    function toggleFaq(btn) {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+    }
+
+    /* ---- Cookie banner ---- */
+    function acceptCookie() { dismissCookie(); localStorage.setItem('nf_cookie', 'accepted'); }
+    function dismissCookie() { document.getElementById('cookieBanner').classList.remove('show'); }
+
+    /* ---- Back to top ---- */
+    window.addEventListener('scroll', () => {
+        document.getElementById('backToTop').classList.toggle('show', window.scrollY > 400);
+    }, { passive: true });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        if (!localStorage.getItem('nf_cookie')) {
+            setTimeout(() => document.getElementById('cookieBanner').classList.add('show'), 1400);
+        }
+        updateSim();
+        const saved = localStorage.getItem('nf_lang') || 'fr';
+        setLang(saved);
+    });
+
+    /* ---- Live form validation on blur ---- */
+    ['fNom','fPrenom','fEmail','fTel','fMontant','fRevenus'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('blur', () => {
+            const step = ['fNom','fPrenom','fEmail','fTel'].includes(id) ? 1
+                       : id === 'fMontant' ? 2 : 3;
+            validateStep(step);
+        });
+    });
+
+    /* ==============================================================
+       TRANSLATIONS
+    ============================================================== */
+    const LANGS = {
+        fr: {
+            nav_home:'Accueil', nav_offers:'Nos Offres', nav_sim:'Simulation',
+            nav_about:'À propos', nav_contact:'Contact',
+            btn_login:'Connexion', btn_open:'Ouvrir un compte',
+            hero_tag:'Agréé ACPR · Certifié SSL · RGPD Conforme',
+            hero_title:'Votre partenaire<br>financier de <span class="accent">confiance</span>',
+            hero_subtitle:'Des solutions de financement personnalisées, rapides et sécurisées. Obtenez une réponse en moins de 24h, entièrement en ligne, sans déplacement.',
+            hero_btn_sim:'Simuler un prêt', hero_btn_discover:'Découvrir nos offres',
+            badge_clients:'clients actifs', badge_sat:'clients satisfaits',
+            badge_acpr:'Agréé ACPR', badge_acpr_sub:'Autorité de contrôle',
+            srv_tag:'Nos solutions', srv_title:'Des offres adaptées à chaque projet',
+            srv_sub:'Que vous souhaitiez financer un bien immobilier, un véhicule ou consolider vos crédits, nous avons la solution.',
+            s1_title:'Prêt personnel', s1_desc:'Jusqu\'à 75 000 € pour financer vos projets personnels : travaux, voyages, équipement. Taux fixe garanti.',
+            s2_title:'Prêt immobilier', s2_desc:'Devenez propriétaire avec des taux compétitifs dès 3,8% TAEG. Accompagnement personnalisé de A à Z.',
+            s3_title:'Crédit auto', s3_desc:'Financez votre véhicule neuf ou d\'occasion jusqu\'à 60 000 €. Réponse immédiate, livraison sans attente.',
+            s4_title:'Regroupement de crédits', s4_desc:'Simplifiez votre gestion budgétaire en regroupant tous vos crédits en une seule mensualité réduite.',
+            s5_title:'Épargne & placement', s5_desc:'Faites fructifier votre argent avec nos livrets et placements sécurisés. Rendements attractifs et garantis.',
+            s6_title:'Assurance emprunteur', s6_desc:'Protégez votre prêt avec une assurance adaptée à votre profil. Couverture décès, invalidité et incapacité.',
+            s_sim:'Simuler', s_more:'En savoir plus',
+            sim_tag:'Simulateur', sim_title:'Calculez votre mensualité en temps réel',
+            sim_sub:'Ajustez les paramètres et obtenez une estimation immédiate, sans engagement.',
+            sim_type_label:'Type de prêt', sim_amount_label:'Montant souhaité',
+            sim_dur_label:'Durée de remboursement', sim_btn:'Faire une demande',
+            sim_t1:'Prêt personnel', sim_t2:'Prêt immobilier', sim_t3:'Crédit auto', sim_t4:'Regroupement de crédits',
+            sim_res_title:'Résultat de votre simulation', sim_monthly_label:'Mensualité estimée',
+            sim_d_amount:'Montant emprunté', sim_d_dur:'Durée',
+            sim_d_taeg:'TAEG indicatif', sim_d_cost:'Coût total du crédit', sim_d_total:'Total à rembourser',
+            sim_disclaimer:'Simulation non contractuelle. TAEG calculé à titre indicatif. Votre taux définitif sera déterminé en fonction de votre dossier.',
+            why_tag:'Nos engagements', why_title:'Pourquoi choisir Nationalfinance ?',
+            why_sub:'Rapidité, transparence et sécurité — trois piliers au cœur de chacune de nos offres.',
+            w1_title:'Réponse sous 24h', w1_desc:'Votre demande est étudiée rapidement par nos équipes. Vous recevez une réponse de principe en moins d\'une journée.',
+            w2_title:'100% en ligne', w2_desc:'Pas de déplacement, pas de paperasse inutile. Déposez votre dossier depuis chez vous en quelques minutes.',
+            w3_title:'Données sécurisées', w3_desc:'Chiffrement SSL 256 bits, conformité RGPD totale. Vos données personnelles et financières sont protégées.',
+            w4_title:'Conseillers 6j/7', w4_desc:'Une équipe de spécialistes disponibles du lundi au samedi pour vous accompagner et répondre à vos questions.',
+            tst_tag:'Témoignages', tst_title:'Ils nous font confiance',
+            tst_sub:'Plus de 50 000 clients satisfaits témoignent de leur expérience avec Nationalfinance.',
+            t1_text:'"J\'ai obtenu mon prêt personnel en moins de 48h. Le processus était simple, transparent, et le conseiller très à l\'écoute. Je recommande vivement !"',
+            t2_text:'"Nationalfinance a financé mon projet immobilier avec un taux excellent. Le suivi de dossier en ligne est très pratique, et tout s\'est fait sans stress."',
+            t3_text:'"Le regroupement de crédits m\'a permis de réduire mes mensualités de 40%. L\'équipe est professionnelle et réactive. Je suis enfin sereine financièrement."',
+            cnt1:'Clients actifs', cnt2:'Taux d\'acceptation', cnt3:'Ans d\'existence', cnt4:'Note moyenne clients',
+            faq_tag:'FAQ', faq_title:'Questions fréquentes', faq_sub:'Vous avez des questions ? Nous avons les réponses.',
+            ct_tag:'Contact', ct_title:'Nous sommes à votre écoute',
+            ct_sub:'Notre équipe de conseillers est disponible du lundi au samedi pour répondre à toutes vos questions.',
+            cta_title:'Prêt à concrétiser votre projet ?',
+            cta_sub:'Rejoignez plus de 50 000 clients qui nous font confiance.',
+            cta_btn:'Faire une demande gratuite',
+            cookie_text:'Nous utilisons des cookies pour améliorer votre expérience et analyser notre trafic. En continuant, vous acceptez notre politique de confidentialité (RGPD).',
+            cookie_accept:'Accepter', cookie_refuse:'Refuser',
+        },
+        en: {
+            nav_home:'Home', nav_offers:'Our Offers', nav_sim:'Simulate',
+            nav_about:'About', nav_contact:'Contact',
+            btn_login:'Login', btn_open:'Open an Account',
+            hero_tag:'ACPR Approved · SSL Certified · GDPR Compliant',
+            hero_title:'Your trusted<br>financial <span class="accent">partner</span>',
+            hero_subtitle:'Personalised, fast and secure financing solutions. Get an answer in less than 24 hours, fully online, no travel required.',
+            hero_btn_sim:'Simulate a loan', hero_btn_discover:'Discover our offers',
+            badge_clients:'active clients', badge_sat:'satisfied clients',
+            badge_acpr:'ACPR Approved', badge_acpr_sub:'Regulatory authority',
+            srv_tag:'Our solutions', srv_title:'Offers tailored to every project',
+            srv_sub:'Whether you want to finance real estate, a vehicle, or consolidate your debts, we have the solution.',
+            s1_title:'Personal loan', s1_desc:'Up to €75,000 to finance your personal projects: renovations, travel, equipment. Fixed rate guaranteed.',
+            s2_title:'Mortgage', s2_desc:'Become a homeowner with competitive rates from 3.8% APR. Personalised support from start to finish.',
+            s3_title:'Auto loan', s3_desc:'Finance your new or used vehicle up to €60,000. Immediate response, no waiting.',
+            s4_title:'Debt consolidation', s4_desc:'Simplify your budget by consolidating all your loans into one reduced monthly payment.',
+            s5_title:'Savings & investment', s5_desc:'Grow your money with our secure savings accounts and investments. Attractive, guaranteed returns.',
+            s6_title:'Borrower insurance', s6_desc:'Protect your loan with insurance tailored to your profile. Coverage for death, disability and incapacity.',
+            s_sim:'Simulate', s_more:'Learn more',
+            sim_tag:'Simulator', sim_title:'Calculate your monthly payment in real time',
+            sim_sub:'Adjust the parameters and get an immediate estimate, with no commitment.',
+            sim_type_label:'Loan type', sim_amount_label:'Requested amount',
+            sim_dur_label:'Repayment period', sim_btn:'Submit a request',
+            sim_t1:'Personal loan', sim_t2:'Mortgage', sim_t3:'Auto loan', sim_t4:'Debt consolidation',
+            sim_res_title:'Your simulation result', sim_monthly_label:'Estimated monthly payment',
+            sim_d_amount:'Amount borrowed', sim_d_dur:'Duration',
+            sim_d_taeg:'Indicative APR', sim_d_cost:'Total credit cost', sim_d_total:'Total to repay',
+            sim_disclaimer:'Non-contractual simulation. APR calculated for indicative purposes. Your final rate will depend on your application.',
+            why_tag:'Our commitments', why_title:'Why choose Nationalfinance?',
+            why_sub:'Speed, transparency and security — three pillars at the heart of every offer.',
+            w1_title:'Response within 24h', w1_desc:'Your application is quickly reviewed by our teams. You receive a decision in principle within one business day.',
+            w2_title:'100% online', w2_desc:'No travel, no unnecessary paperwork. Submit your application from home in just a few minutes.',
+            w3_title:'Secure data', w3_desc:'256-bit SSL encryption, full GDPR compliance. Your personal and financial data is fully protected.',
+            w4_title:'Advisors 6 days/7', w4_desc:'A team of specialists available Monday to Saturday to guide you and answer all your questions.',
+            tst_tag:'Testimonials', tst_title:'They trust us',
+            tst_sub:'More than 50,000 satisfied clients share their experience with Nationalfinance.',
+            t1_text:'"I got my personal loan in less than 48 hours. The process was simple, transparent, and the advisor was very attentive. Highly recommended!"',
+            t2_text:'"Nationalfinance financed my real estate project at an excellent rate. The online file tracking is very convenient, and everything went smoothly."',
+            t3_text:'"Debt consolidation allowed me to reduce my monthly payments by 40%. The team is professional and responsive. I\'m finally at ease financially."',
+            cnt1:'Active clients', cnt2:'Acceptance rate', cnt3:'Years of experience', cnt4:'Average client rating',
+            faq_tag:'FAQ', faq_title:'Frequently asked questions', faq_sub:'Have questions? We have answers.',
+            ct_tag:'Contact', ct_title:'We are here for you',
+            ct_sub:'Our team of advisors is available Monday to Saturday to answer all your questions.',
+            cta_title:'Ready to make your project a reality?',
+            cta_sub:'Join more than 50,000 clients who trust us.',
+            cta_btn:'Submit a free request',
+            cookie_text:'We use cookies to improve your experience and analyse our traffic. By continuing, you accept our privacy policy (GDPR).',
+            cookie_accept:'Accept', cookie_refuse:'Decline',
+        },
+        de: {
+            nav_home:'Startseite', nav_offers:'Unsere Angebote', nav_sim:'Simulation',
+            nav_about:'Über uns', nav_contact:'Kontakt',
+            btn_login:'Anmelden', btn_open:'Konto eröffnen',
+            hero_tag:'ACPR-zugelassen · SSL-zertifiziert · DSGVO-konform',
+            hero_title:'Ihr vertrauenswürdiger<br><span class="accent">Finanzpartner</span>',
+            hero_subtitle:'Maßgeschneiderte, schnelle und sichere Finanzierungslösungen. Erhalten Sie innerhalb von 24 Stunden eine Antwort – vollständig online, ohne Anreise.',
+            hero_btn_sim:'Kredit simulieren', hero_btn_discover:'Unsere Angebote entdecken',
+            badge_clients:'aktive Kunden', badge_sat:'zufriedene Kunden',
+            badge_acpr:'ACPR-zugelassen', badge_acpr_sub:'Regulierungsbehörde',
+            srv_tag:'Unsere Lösungen', srv_title:'Angebote für jedes Projekt',
+            srv_sub:'Ob Immobilien, Fahrzeug oder Schuldenumstrukturierung – wir haben die passende Lösung.',
+            s1_title:'Privatkredit', s1_desc:'Bis zu 75.000 € für Ihre persönlichen Projekte: Renovierung, Reisen, Ausstattung. Garantierter Festzins.',
+            s2_title:'Immobilienkredit', s2_desc:'Werden Sie Eigentümer mit wettbewerbsfähigen Zinsen ab 3,8% effektivem Jahreszins.',
+            s3_title:'Autokredit', s3_desc:'Finanzieren Sie Ihr Neu- oder Gebrauchtfahrzeug bis zu 60.000 €. Sofortige Antwort.',
+            s4_title:'Schuldenumstrukturierung', s4_desc:'Vereinfachen Sie Ihr Budget, indem Sie alle Kredite in einer einzigen reduzierten Rate zusammenfassen.',
+            s5_title:'Sparen & Anlegen', s5_desc:'Lassen Sie Ihr Geld mit unseren sicheren Sparprodukten wachsen. Attraktive, garantierte Renditen.',
+            s6_title:'Kreditversicherung', s6_desc:'Schützen Sie Ihren Kredit mit einer auf Ihr Profil zugeschnittenen Versicherung.',
+            s_sim:'Simulieren', s_more:'Mehr erfahren',
+            sim_tag:'Rechner', sim_title:'Berechnen Sie Ihre monatliche Rate in Echtzeit',
+            sim_sub:'Passen Sie die Parameter an und erhalten Sie sofort eine unverbindliche Schätzung.',
+            sim_type_label:'Kreditart', sim_amount_label:'Gewünschter Betrag',
+            sim_dur_label:'Laufzeit', sim_btn:'Antrag stellen',
+            sim_t1:'Privatkredit', sim_t2:'Immobilienkredit', sim_t3:'Autokredit', sim_t4:'Schuldenumstrukturierung',
+            sim_res_title:'Ihr Simulationsergebnis', sim_monthly_label:'Geschätzte Monatsrate',
+            sim_d_amount:'Kreditbetrag', sim_d_dur:'Laufzeit',
+            sim_d_taeg:'Indikativer Jahreszins', sim_d_cost:'Gesamtkreditkosten', sim_d_total:'Gesamtrückzahlung',
+            sim_disclaimer:'Unverbindliche Simulation. Der effektive Jahreszins ist indikativ. Ihr endgültiger Zinssatz hängt von Ihrem Antrag ab.',
+            why_tag:'Unsere Versprechen', why_title:'Warum Nationalfinance wählen?',
+            why_sub:'Schnelligkeit, Transparenz und Sicherheit – drei Säulen im Mittelpunkt jedes Angebots.',
+            w1_title:'Antwort innerhalb 24h', w1_desc:'Ihr Antrag wird schnell von unserem Team geprüft. Sie erhalten eine Grundsatzentscheidung innerhalb eines Werktages.',
+            w2_title:'100% online', w2_desc:'Kein Anfahrtsweg, kein unnötiger Papierkram. Reichen Sie Ihren Antrag von zu Hause in wenigen Minuten ein.',
+            w3_title:'Sichere Daten', w3_desc:'256-Bit-SSL-Verschlüsselung, vollständige DSGVO-Konformität. Ihre persönlichen und finanziellen Daten sind geschützt.',
+            w4_title:'Berater 6 Tage/7', w4_desc:'Ein Spezialistenteam steht Ihnen von Montag bis Samstag zur Seite.',
+            tst_tag:'Erfahrungsberichte', tst_title:'Sie vertrauen uns',
+            tst_sub:'Mehr als 50.000 zufriedene Kunden teilen ihre Erfahrungen mit Nationalfinance.',
+            t1_text:'"Ich habe meinen Privatkredit in weniger als 48 Stunden erhalten. Der Prozess war einfach, transparent und der Berater sehr aufmerksam. Sehr empfehlenswert!"',
+            t2_text:'"Nationalfinance hat mein Immobilienprojekt zu einem hervorragenden Zinssatz finanziert. Die Online-Nachverfolgung ist sehr praktisch."',
+            t3_text:'"Die Schuldenumstrukturierung hat mir geholfen, meine Monatsraten um 40% zu senken. Das Team ist professionell und reaktionsschnell."',
+            cnt1:'Aktive Kunden', cnt2:'Annahmequote', cnt3:'Jahre Erfahrung', cnt4:'Durchschnittliche Bewertung',
+            faq_tag:'FAQ', faq_title:'Häufig gestellte Fragen', faq_sub:'Haben Sie Fragen? Wir haben die Antworten.',
+            ct_tag:'Kontakt', ct_title:'Wir sind für Sie da',
+            ct_sub:'Unser Beraterteam ist von Montag bis Samstag für Ihre Fragen erreichbar.',
+            cta_title:'Bereit, Ihr Projekt zu verwirklichen?',
+            cta_sub:'Schließen Sie sich über 50.000 Kunden an, die uns vertrauen.',
+            cta_btn:'Kostenlosen Antrag stellen',
+            cookie_text:'Wir verwenden Cookies, um Ihre Erfahrung zu verbessern und unseren Traffic zu analysieren. Durch die weitere Nutzung stimmen Sie unserer Datenschutzrichtlinie (DSGVO) zu.',
+            cookie_accept:'Akzeptieren', cookie_refuse:'Ablehnen',
+        },
+        es: {
+            nav_home:'Inicio', nav_offers:'Nuestras Ofertas', nav_sim:'Simulación',
+            nav_about:'Sobre nosotros', nav_contact:'Contacto',
+            btn_login:'Iniciar sesión', btn_open:'Abrir una cuenta',
+            hero_tag:'Aprobado ACPR · Certificado SSL · Conforme RGPD',
+            hero_title:'Su socio financiero<br>de <span class="accent">confianza</span>',
+            hero_subtitle:'Soluciones de financiación personalizadas, rápidas y seguras. Obtenga una respuesta en menos de 24h, completamente en línea, sin desplazamientos.',
+            hero_btn_sim:'Simular un préstamo', hero_btn_discover:'Descubrir nuestras ofertas',
+            badge_clients:'clientes activos', badge_sat:'clientes satisfechos',
+            badge_acpr:'Aprobado ACPR', badge_acpr_sub:'Autoridad reguladora',
+            srv_tag:'Nuestras soluciones', srv_title:'Ofertas adaptadas a cada proyecto',
+            srv_sub:'Tanto si desea financiar un bien inmueble, un vehículo o consolidar sus deudas, tenemos la solución.',
+            s1_title:'Préstamo personal', s1_desc:'Hasta 75.000 € para financiar sus proyectos personales: obras, viajes, equipamiento. Tipo fijo garantizado.',
+            s2_title:'Préstamo hipotecario', s2_desc:'Conviértase en propietario con tipos competitivos desde el 3,8% TAE. Acompañamiento personalizado.',
+            s3_title:'Crédito auto', s3_desc:'Financie su vehículo nuevo o de ocasión hasta 60.000 €. Respuesta inmediata, sin esperas.',
+            s4_title:'Reunificación de deudas', s4_desc:'Simplifique su presupuesto reunificando todos sus créditos en una única cuota mensual reducida.',
+            s5_title:'Ahorro e inversión', s5_desc:'Haga crecer su dinero con nuestros productos de ahorro seguros. Rentabilidades atractivas y garantizadas.',
+            s6_title:'Seguro del prestatario', s6_desc:'Proteja su préstamo con un seguro adaptado a su perfil. Cobertura por fallecimiento, invalidez e incapacidad.',
+            s_sim:'Simular', s_more:'Saber más',
+            sim_tag:'Simulador', sim_title:'Calcule su cuota mensual en tiempo real',
+            sim_sub:'Ajuste los parámetros y obtenga una estimación inmediata, sin compromiso.',
+            sim_type_label:'Tipo de préstamo', sim_amount_label:'Importe deseado',
+            sim_dur_label:'Plazo de amortización', sim_btn:'Realizar una solicitud',
+            sim_t1:'Préstamo personal', sim_t2:'Préstamo hipotecario', sim_t3:'Crédito auto', sim_t4:'Reunificación de deudas',
+            sim_res_title:'Resultado de su simulación', sim_monthly_label:'Cuota mensual estimada',
+            sim_d_amount:'Importe prestado', sim_d_dur:'Plazo',
+            sim_d_taeg:'TAE indicativa', sim_d_cost:'Coste total del crédito', sim_d_total:'Total a reembolsar',
+            sim_disclaimer:'Simulación no contractual. TAE calculada a título indicativo. Su tipo definitivo se determinará en función de su solicitud.',
+            why_tag:'Nuestros compromisos', why_title:'¿Por qué elegir Nationalfinance?',
+            why_sub:'Rapidez, transparencia y seguridad — tres pilares en el centro de cada oferta.',
+            w1_title:'Respuesta en 24h', w1_desc:'Su solicitud es estudiada rápidamente por nuestros equipos. Recibirá una respuesta de principio en menos de un día.',
+            w2_title:'100% en línea', w2_desc:'Sin desplazamientos, sin papeleo innecesario. Envíe su solicitud desde casa en pocos minutos.',
+            w3_title:'Datos seguros', w3_desc:'Cifrado SSL de 256 bits, plena conformidad con el RGPD. Sus datos personales y financieros están protegidos.',
+            w4_title:'Asesores 6 días/7', w4_desc:'Un equipo de especialistas disponible de lunes a sábado para acompañarle y responder a sus preguntas.',
+            tst_tag:'Testimonios', tst_title:'Nos tienen confianza',
+            tst_sub:'Más de 50.000 clientes satisfechos comparten su experiencia con Nationalfinance.',
+            t1_text:'"Obtuve mi préstamo personal en menos de 48h. El proceso fue sencillo, transparente y el asesor muy atento. ¡Lo recomiendo mucho!"',
+            t2_text:'"Nationalfinance financió mi proyecto inmobiliario con un tipo excelente. El seguimiento en línea es muy práctico y todo fue sin estrés."',
+            t3_text:'"La reunificación de deudas me permitió reducir mis cuotas un 40%. El equipo es profesional y reactivo. Por fin estoy tranquila económicamente."',
+            cnt1:'Clientes activos', cnt2:'Tasa de aceptación', cnt3:'Años de experiencia', cnt4:'Valoración media',
+            faq_tag:'FAQ', faq_title:'Preguntas frecuentes', faq_sub:'¿Tiene preguntas? Tenemos las respuestas.',
+            ct_tag:'Contacto', ct_title:'Estamos a su disposición',
+            ct_sub:'Nuestro equipo de asesores está disponible de lunes a sábado para responder a todas sus preguntas.',
+            cta_title:'¿Listo para hacer realidad su proyecto?',
+            cta_sub:'Únase a más de 50.000 clientes que confían en nosotros.',
+            cta_btn:'Realizar una solicitud gratuita',
+            cookie_text:'Usamos cookies para mejorar su experiencia y analizar nuestro tráfico. Al continuar, acepta nuestra política de privacidad (RGPD).',
+            cookie_accept:'Aceptar', cookie_refuse:'Rechazar',
+        }
+    };
+
+    /* ---- Language engine ---- */
+    const LANG_META = {
+        fr: { flag:'🇫🇷', code:'FR' },
+        en: { flag:'🇬🇧', code:'EN' },
+        de: { flag:'🇩🇪', code:'DE' },
+        es: { flag:'🇪🇸', code:'ES' },
+    };
+
+    function applyLang(lang) {
+        const t = LANGS[lang];
+        if (!t) return;
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            if (t[el.dataset.i18n] !== undefined) el.textContent = t[el.dataset.i18n];
+        });
+        document.querySelectorAll('[data-i18n-html]').forEach(el => {
+            const k = el.dataset.i18nHtml;
+            if (t[k] !== undefined) el.innerHTML = t[k];
+        });
+        // hero title needs data-i18n-html
+        const heroTitle = document.querySelector('.hero-title');
+        if (heroTitle && t.hero_title) heroTitle.innerHTML = t.hero_title;
+
+        // simulator select options
+        const sel = document.getElementById('simType');
+        ['sim_t1','sim_t2','sim_t3','sim_t4'].forEach((k,i) => {
+            if (sel && sel.options[i] && t[k]) sel.options[i].text = t[k];
+        });
+        // update displayed type name in simulator
+        if (sel && t['sim_t' + (sel.selectedIndex + 1)]) {
+            document.getElementById('simTypeName').textContent = t['sim_t' + (sel.selectedIndex + 1)];
+        }
+        // update html lang attribute
+        document.documentElement.lang = lang;
+    }
+
+    function setLang(lang) {
+        localStorage.setItem('nf_lang', lang);
+        const meta = LANG_META[lang];
+        if (!meta) return;
+        // update switcher UI
+        document.getElementById('langFlag').textContent = meta.flag;
+        document.getElementById('langCode').textContent = meta.code;
+        document.querySelectorAll('.lang-option').forEach(btn => {
+            btn.classList.toggle('active', btn.textContent.trim().includes(meta.flag));
+        });
+        // update mobile buttons
+        ['fr','en','de','es'].forEach(l => {
+            const btn = document.getElementById('ml' + l.toUpperCase());
+            if (btn) btn.classList.toggle('active', l === lang);
+        });
+        document.getElementById('langSwitcher').classList.remove('open');
+        applyLang(lang);
+    }
+
+    function toggleLangMenu() {
+        document.getElementById('langSwitcher').classList.toggle('open');
+    }
+
+    document.addEventListener('click', e => {
+        const sw = document.getElementById('langSwitcher');
+        if (sw && !sw.contains(e.target)) sw.classList.remove('open');
+    });
+</script>
+</body>
+</html>
