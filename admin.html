@@ -303,6 +303,14 @@ tr:hover td{background:#fafbfc}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           Journaux
         </div>
+        <div class="sb-link" onclick="showView('transfers')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Virements
+        </div>
+        <div class="sb-link" onclick="showView('settings')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Paramètres
+        </div>
       </nav>
       <div class="sb-footer">
         <button class="sb-logout" onclick="logout()">
@@ -443,6 +451,54 @@ tr:hover td{background:#fafbfc}
               <thead><tr><th>Date / Heure</th><th>Administrateur</th><th>Action</th><th>Détails</th></tr></thead>
               <tbody id="logsTable"><tr><td colspan="4" class="tb-empty">Chargement…</td></tr></tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- ── TRANSFERS ── -->
+        <div class="view" id="viewTransfers">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Virements des clients</span>
+              <button class="btn btn-gold btn-sm" onclick="loadAdminTransfers()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg> Actualiser
+              </button>
+            </div>
+            <table>
+              <thead><tr><th>Date</th><th>Client</th><th>Type</th><th>Destinataire</th><th>Montant</th><th>Statut</th></tr></thead>
+              <tbody id="transfersTable"><tr><td colspan="6" class="tb-empty">Chargement…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── SETTINGS ── -->
+        <div class="view" id="viewSettings">
+          <div class="card" style="max-width:640px">
+            <div class="card-header">
+              <span class="card-title">Code de validation des virements</span>
+            </div>
+            <div style="padding:26px">
+              <div style="background:var(--off);border-radius:var(--rl);padding:22px;margin-bottom:26px;border:1px solid var(--g100)">
+                <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--g400);margin-bottom:12px">Code actuellement actif</div>
+                <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+                  <code id="transferCodeDisplay" style="font-size:1.7rem;font-weight:800;color:var(--navy);background:var(--white);border:2px solid var(--g200);padding:10px 22px;border-radius:var(--r);letter-spacing:.2em;font-family:'Poppins',monospace;min-width:160px;text-align:center">—</code>
+                  <button onclick="loadSettings()" class="btn btn-outline btn-sm">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg> Actualiser
+                  </button>
+                </div>
+                <p style="font-size:.78rem;color:var(--g400);margin-top:14px;line-height:1.6">Ce code est requis pour valider tout virement client. Il s'arrête à <strong>93%</strong> jusqu'à saisie du code. Communiquez-le <strong>verbalement</strong> au client lors de sa demande de virement.</p>
+              </div>
+
+              <div id="settingsAlert" style="margin-bottom:12px"></div>
+              <div class="fgroup" style="max-width:360px">
+                <label>Nouveau code de validation</label>
+                <input id="newTransferCode" placeholder="Ex : NF-7823 (min. 4 caractères)" onkeydown="if(event.key==='Enter')updateTransferCode()" style="text-transform:uppercase;letter-spacing:.1em;font-weight:700">
+              </div>
+              <p style="font-size:.78rem;color:var(--g400);margin-bottom:18px">Le nouveau code est actif immédiatement pour tous les virements suivants.</p>
+              <button class="btn btn-gold" onclick="updateTransferCode()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Mettre à jour le code
+              </button>
+            </div>
           </div>
         </div>
 
@@ -648,13 +704,16 @@ function showView(v) {
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.sb-link').forEach(el => el.classList.remove('active'));
   document.getElementById('view' + v.charAt(0).toUpperCase() + v.slice(1)).classList.add('active');
-  document.querySelectorAll('.sb-link')[['dashboard','requests','clients','logs'].indexOf(v)].classList.add('active');
-  const titles = { dashboard:'Tableau de bord', requests:'Demandes', clients:'Clients', logs:'Journaux' };
+  const navIdx = ['dashboard','requests','clients','logs','transfers','settings'].indexOf(v);
+  if (navIdx >= 0) document.querySelectorAll('.sb-link')[navIdx].classList.add('active');
+  const titles = { dashboard:'Tableau de bord', requests:'Demandes', clients:'Clients', logs:'Journaux', transfers:'Virements clients', settings:'Paramètres' };
   document.getElementById('topbarTitle').textContent = titles[v] || v;
-  if (v === 'requests') loadRequests();
-  if (v === 'clients')  loadClients();
-  if (v === 'logs')     loadLogs();
+  if (v === 'requests')  loadRequests();
+  if (v === 'clients')   loadClients();
+  if (v === 'logs')      loadLogs();
   if (v === 'dashboard') loadDashboard();
+  if (v === 'transfers') loadAdminTransfers();
+  if (v === 'settings')  loadSettings();
 }
 
 /* ── Dashboard ── */
@@ -985,6 +1044,74 @@ document.querySelectorAll('.modal-ov').forEach(ov => {
   ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('open'); });
 });
 document.addEventListener('keydown', e => { if (e.key==='Escape') document.querySelectorAll('.modal-ov.open').forEach(m=>m.classList.remove('open')); });
+
+/* ════════════════════════════════════════
+   SETTINGS
+════════════════════════════════════════ */
+async function loadSettings() {
+  try {
+    const d = await api('GET', '/api/admin/settings');
+    document.getElementById('transferCodeDisplay').textContent = d.settings.transfer_code || '—';
+    document.getElementById('settingsAlert').innerHTML = '';
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+async function updateTransferCode() {
+  const code = document.getElementById('newTransferCode').value.trim();
+  if (!code || code.length < 4) {
+    document.getElementById('settingsAlert').innerHTML = '<div class="alert alert-error">Code invalide — minimum 4 caractères.</div>';
+    return;
+  }
+  try {
+    await api('PUT', '/api/admin/settings', { transfer_code: code });
+    document.getElementById('settingsAlert').innerHTML = '<div class="alert alert-success">✅ Code de validation mis à jour avec succès.</div>';
+    document.getElementById('newTransferCode').value = '';
+    loadSettings();
+    setTimeout(() => { document.getElementById('settingsAlert').innerHTML = ''; }, 4000);
+  } catch(e) {
+    document.getElementById('settingsAlert').innerHTML = `<div class="alert alert-error">${e.message}</div>`;
+  }
+}
+
+/* ════════════════════════════════════════
+   ADMIN TRANSFERS
+════════════════════════════════════════ */
+async function loadAdminTransfers() {
+  try {
+    const d = await api('GET', '/api/admin/transfers');
+    const tbody = document.getElementById('transfersTable');
+    if (!d.transfers.length) {
+      tbody.innerHTML = '<tr><td colspan="6" class="tb-empty">Aucun virement enregistré</td></tr>';
+      return;
+    }
+    tbody.innerHTML = d.transfers.map(t => {
+      const isInterne   = t.type === 'interne';
+      const done        = t.status === 'completed';
+      const typeBadge   = isInterne
+        ? '<span class="badge badge-processed">Nationalfinance</span>'
+        : '<span class="badge badge-pending">SEPA Externe</span>';
+      const statusBadge = done
+        ? '<span class="badge badge-accepted">Effectué</span>'
+        : '<span class="badge badge-pending">En attente</span>';
+      const destHtml = [
+        t.recipient_name ? `<strong>${t.recipient_name}</strong>` : '',
+        `<span style="font-size:.75rem;color:var(--g400);font-family:monospace">${t.recipient_ref}</span>`,
+        t.bank_name ? `<span style="font-size:.73rem;color:var(--g400)">${t.bank_name}</span>` : ''
+      ].filter(Boolean).join('<br>');
+      return `<tr>
+        <td style="white-space:nowrap;font-size:.8rem">${fmtDate(t.created_at)}</td>
+        <td>
+          <strong>${t.prenom} ${t.nom}</strong><br>
+          <code style="font-size:.73rem;color:var(--g400)">${t.sender_client_id}</code>
+        </td>
+        <td>${typeBadge}</td>
+        <td>${destHtml}</td>
+        <td><strong style="color:var(--navy)">${fmtMoney(t.amount)}</strong></td>
+        <td>${statusBadge}</td>
+      </tr>`;
+    }).join('');
+  } catch(e) { toast(e.message, 'error'); }
+}
 </script>
 </body>
 </html>

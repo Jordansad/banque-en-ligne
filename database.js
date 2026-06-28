@@ -77,6 +77,25 @@ db.exec(`
     details    TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
+
+  CREATE TABLE IF NOT EXISTS transfers (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    client_id      INTEGER NOT NULL REFERENCES clients(id),
+    type           TEXT NOT NULL,
+    amount         REAL NOT NULL,
+    recipient_ref  TEXT,
+    recipient_name TEXT,
+    bank_name      TEXT,
+    status         TEXT DEFAULT 'pending',
+    created_at     DATETIME DEFAULT CURRENT_TIMESTAMP,
+    completed_at   DATETIME
+  );
+
+  CREATE TABLE IF NOT EXISTS settings (
+    key        TEXT PRIMARY KEY,
+    value      TEXT NOT NULL,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
 `);
 
 // Seed default admin
@@ -87,6 +106,10 @@ if (!existing) {
     'admin@nationalfinance.fr', hash, 'Administrateur Principal'
   );
   console.log('✅ Admin créé → admin@nationalfinance.fr / Admin@2024');
+}
+
+if (!db.prepare("SELECT key FROM settings WHERE key='transfer_code'").get()) {
+  db.prepare("INSERT INTO settings (key, value) VALUES ('transfer_code', 'NF2024')").run();
 }
 
 module.exports = db;

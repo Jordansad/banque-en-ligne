@@ -237,6 +237,120 @@ app.put('/api/client/password', authClient, (req, res) => {
 });
 
 /* ════════════════════════════════════════
+   ADMIN — Settings
+════════════════════════════════════════ */
+app.get('/api/admin/settings', authAdmin, (req, res) => {
+  const rows = db.prepare('SELECT key, value FROM settings').all();
+  const settings = {};
+  rows.forEach(r => { settings[r.key] = r.value; });
+  res.json({ settings });
+});
+
+app.put('/api/admin/settings', authAdmin, (req, res) => {
+  const { transfer_code } = req.body;
+  if (!transfer_code || transfer_code.trim().length < 4)
+    return res.status(400).json({ error: 'Code invalide (4 caractères minimum)' });
+  db.prepare("INSERT OR REPLACE INTO settings (key, value, updated_at) VALUES ('transfer_code', ?, CURRENT_TIMESTAMP)").run(transfer_code.trim().toUpperCase());
+  log(req.admin.id, 'UPDATE_SETTINGS', 'Code de validation des virements modifié');
+  res.json({ success: true });
+});
+
+/* ════════════════════════════════════════
+   ADMIN — Transfers
+════════════════════════════════════════ */
+app.get('/api/admin/transfers', authAdmin, (req, res) => {
+  const transfers = db.prepare(`
+    SELECT t.*, c.nom, c.prenom, c.client_id AS sender_client_id
+    FROM transfers t
+    JOIN clients c ON t.client_id = c.id
+    ORDER BY t.created_at DESC LIMIT 200
+  `).all();
+  res.json({ transfers });
+});
+
+/* ════════════════════════════════════════
+   CLIENT — Transfers
+════════════════════════════════════════ */
+app.post('/api/client/transfers', authClient, (req, res) => {
+  const { type, amount, recipient_ref, recipient_name, bank_name } = req.body;
+  const client = db.prepare('SELECT * FROM clients WHERE id=?').get(req.client.id);
+  if (!client) return res.status(404).json({ error: 'Client introuvable' });
+  const amt = parseFloat(amount);
+  if (isNaN(amt) || amt <= 0) return res.status(400).json({ error: 'Montant invalide' });
+  if (amt > client.balance) return res.status(400).json({ error: 'Solde insuffisant pour ce virement' });
+  if (!type || !['interne', 'externe'].includes(type)) return res.status(400).json({ error: 'Type de virement invalide' });
+  if (type === 'interne') {
+    if (!recipient_ref) return res.status(400).json({ error: 'Numéro de compte destinataire requis' });
+    const recipient = db.prepare('SELECT id, status FROM clients WHERE client_id=?').get(recipient_ref.trim().toUpperCase());
+    if (!recipient) return res.status(404).json({ error: 'Compte destinataire introuvable dans Nationalfinance' });
+    if (recipient.id === client.id) return res.status(400).json({ error: 'Vous ne pouvez pas effectuer un virement vers votre propre compte' });
+    if (recipient.status !== 'active') return res.status(400).json({ error: 'Le compte destinataire est inactif' });
+  } else {
+    if (!recipient_ref) return res.status(400).json({ error: 'IBAN requis' });
+    if (!bank_name) return res.status(400).json({ error: 'Nom de la banque destinataire requis' });
+    if (!recipient_name) return res.status(400).json({ error: 'Nom du bénéficiaire requis' });
+  }
+  const r = db.prepare(
+    'INSERT INTO transfers (client_id,type,amount,recipient_ref,recipient_name,bank_name) VALUES (?,?,?,?,?,?)'
+  ).run(client.id, type, amt, (recipient_ref || '').trim(), recipient_name || '', bank_name || '');
+  res.json({ success: true, transfer_id: r.lastInsertRowid });
+});
+
+app.post('/api/client/transfers/:id/confirm', authClient, (req, res) => {
+  const { code } = req.body;
+  const transfer = db.prepare('SELECT * FROM transfers WHERE id=? AND client_id=?').get(req.params.id, req.client.id);
+  if (!transfer) return res.status(404).json({ error: 'Virement introuvable' });
+  if (transfer.status !== 'pending') return res.status(400).json({ error: 'Ce virement a déjà été traité' });
+  const setting = db.prepare("SELECT value FROM settings WHERE key='transfer_code'").get();
+  const validCode = (setting?.value || 'NF2024').toUpperCase();
+  if (!code || code.trim().toUpperCase() !== validCode)
+    return res.status(400).json({ error: 'Code de validation incorrect' });
+  const client = db.prepare('SELECT * FROM clients WHERE id=?').get(req.client.id);
+  if (client.balance < transfer.amount) return res.status(400).json({ error: 'Solde insuffisant' });
+
+  const run = db.transaction(() => {
+    const newSenderBal = parseFloat((client.balance - transfer.amount).toFixed(2));
+    db.prepare('UPDATE clients SET balance=?,updated_at=CURRENT_TIMESTAMP WHERE id=?').run(newSenderBal, client.id);
+    let desc = '';
+    if (transfer.type === 'interne') {
+      const recip = db.prepare('SELECT * FROM clients WHERE client_id=?').get(transfer.recipient_ref);
+      if (recip) {
+        const newRecipBal = parseFloat((recip.balance + transfer.amount).toFixed(2));
+        db.prepare('UPDATE clients SET balance=?,updated_at=CURRENT_TIMESTAMP WHERE id=?').run(newRecipBal, recip.id);
+        desc = `Virement vers ${transfer.recipient_name || recip.prenom + ' ' + recip.nom} (${transfer.recipient_ref})`;
+        db.prepare('INSERT INTO transactions (client_id,type,amount,balance_after,description) VALUES (?,?,?,?,?)').run(
+          recip.id, 'credit', transfer.amount, newRecipBal,
+          `Virement reçu de ${client.prenom} ${client.nom} (${client.client_id})`
+        );
+        notify(recip.id, `💸 Virement reçu de ${client.prenom} ${client.nom} — ${transfer.amount.toFixed(2)} € — Solde : ${newRecipBal.toFixed(2)} €`, 'success');
+      } else {
+        desc = `Virement vers ${transfer.recipient_ref}`;
+      }
+    } else {
+      desc = `Virement externe vers ${transfer.bank_name} — IBAN : ${transfer.recipient_ref}`;
+    }
+    db.prepare('INSERT INTO transactions (client_id,type,amount,balance_after,description) VALUES (?,?,?,?,?)').run(
+      client.id, 'debit', transfer.amount, newSenderBal, desc
+    );
+    db.prepare("UPDATE transfers SET status='completed',completed_at=CURRENT_TIMESTAMP WHERE id=?").run(transfer.id);
+    notify(client.id, `✅ Virement de ${transfer.amount.toFixed(2)} € effectué avec succès. Nouveau solde : ${newSenderBal.toFixed(2)} €`, 'success');
+    return { newBalance: newSenderBal };
+  });
+
+  try {
+    const result = run();
+    res.json({ success: true, newBalance: result.newBalance });
+  } catch(e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.get('/api/client/transfers', authClient, (req, res) => {
+  const rows = db.prepare('SELECT * FROM transfers WHERE client_id=? ORDER BY created_at DESC').all(req.client.id);
+  res.json({ transfers: rows });
+});
+
+/* ════════════════════════════════════════
    START
 ════════════════════════════════════════ */
 app.listen(PORT, () => {
