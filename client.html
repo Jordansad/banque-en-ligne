@@ -350,9 +350,14 @@ input,select,textarea{font-family:inherit}
           <div class="card">
             <div class="card-header">
               <span class="card-title">Historique des opérations</span>
-              <button class="btn btn-outline btn-sm" onclick="loadTransactions()">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg> Actualiser
-              </button>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-outline btn-sm" onclick="showView('dashboard')">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg> Retour
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="loadTransactions()">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg> Actualiser
+                </button>
+              </div>
             </div>
             <div class="tx-list" id="txList"><div class="tb-empty">Chargement…</div></div>
           </div>
@@ -363,6 +368,9 @@ input,select,textarea{font-family:inherit}
           <div class="card">
             <div class="card-header">
               <span class="card-title">Mes notifications</span>
+              <button class="btn btn-outline btn-sm" onclick="showView('dashboard')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg> Retour
+              </button>
             </div>
             <div class="notif-list" id="notifList"><div class="tb-empty">Chargement…</div></div>
           </div>
@@ -373,6 +381,9 @@ input,select,textarea{font-family:inherit}
           <div class="card">
             <div class="card-header">
               <span class="card-title">Mon profil</span>
+              <button class="btn btn-outline btn-sm" onclick="showView('dashboard')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg> Retour
+              </button>
             </div>
             <div id="profileAlert" style="padding:0 20px"></div>
             <div class="profile-grid">
@@ -406,6 +417,11 @@ input,select,textarea{font-family:inherit}
 
         <!-- ── VIREMENTS ── -->
         <div class="view" id="viewVirements">
+          <div style="margin-bottom:14px">
+            <button class="btn btn-outline btn-sm" onclick="showView('dashboard')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg> Retour au tableau de bord
+            </button>
+          </div>
           <div class="vir-tabs">
             <button class="vir-tab active" onclick="setVirType('interne')" id="tabInterne">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="vertical-align:middle;margin-right:6px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
