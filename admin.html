@@ -238,11 +238,26 @@ tr:hover td{background:#fafbfc}
 .activity-txt strong{color:var(--g800)}
 .activity-time{font-size:.72rem;color:var(--g400);white-space:nowrap}
 
+.menu-toggle{
+  display:none;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:var(--r);
+  background:transparent;border:1.5px solid var(--g200);
+  color:var(--navy);cursor:pointer;transition:all var(--tr);flex-shrink:0;
+}
+.menu-toggle:hover{background:var(--off)}
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(6,24,40,.55);z-index:99;
+  backdrop-filter:blur(2px);
+}
+.sidebar-overlay.show{display:block}
 @media(max-width:900px){
-  .sidebar{transform:translateX(-100%);transition:transform var(--tr)}
+  .sidebar{transform:translateX(-100%);transition:transform var(--tr);z-index:100}
   .sidebar.open{transform:translateX(0)}
   .main{margin-left:0}
   .stats-grid{grid-template-columns:1fr 1fr}
+  .menu-toggle{display:flex}
+  .topbar{padding:0 16px}
 }
 @media(max-width:600px){
   .stats-grid{grid-template-columns:1fr}
@@ -278,6 +293,7 @@ tr:hover td{background:#fafbfc}
 <div id="appShell">
   <div class="shell">
 
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <div class="sb-logo">
@@ -323,7 +339,12 @@ tr:hover td{background:#fafbfc}
     <!-- Main -->
     <div class="main">
       <div class="topbar">
-        <span class="topbar-title" id="topbarTitle">Tableau de bord</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()" title="Menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <span class="topbar-title" id="topbarTitle">Tableau de bord</span>
+        </div>
         <div class="topbar-user">
           <div class="topbar-avatar" id="adminInitials">A</div>
           <span class="topbar-name" id="adminName">Administrateur</span>
@@ -720,6 +741,15 @@ function logout() {
 }
 
 /* ── Views ── */
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
 function showView(v) {
   currentView = v;
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
@@ -735,6 +765,7 @@ function showView(v) {
   if (v === 'dashboard') loadDashboard();
   if (v === 'transfers') loadAdminTransfers();
   if (v === 'settings')  loadSettings();
+  closeSidebar();
 }
 
 /* ── Dashboard ── */
